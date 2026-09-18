@@ -141,7 +141,7 @@ with st.container(border=True, key="panel-analisis"):
                 if fila["Distribucion"] == "Binomial":
                     variables[fila["Variable"]] = np.random.binomial(fila["Param 1"], fila["Param 2"], parNumSimulaciones)
                 if fila["Distribucion"] == "Triangular":
-                    variables[fila["Variable"]] = np.random.triangular(fila["Param 1"], (fila["Param 2"] , fila["Param 3"], parNumSimulaciones))
+                    variables[fila["Variable"]] = np.random.triangular(fila["Param 1"], fila["Param 2"] , fila["Param 3"], parNumSimulaciones)
                 if fila["Tipo Datos"] == "Entero":
                     variables[fila["Variable"]] = variables[fila["Variable"]].astype(int)
 
