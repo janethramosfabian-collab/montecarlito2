@@ -1,7 +1,8 @@
 import re
 import streamlit as st
 def generarVariables(formula):    
-    listaVariables = re.findall(r"({{[A-Za-z0-9]+}})", formula)
+# Cambia esta línea:
+    listaVariables = re.findall(r"({{[A-Za-z0-9_]+}})", formula)
     formulaSimulacion = formula
     listaNombreVariables = []
     for var in listaVariables:
