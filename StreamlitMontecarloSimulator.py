@@ -143,7 +143,9 @@ with st.container(border=True, key="panel-analisis"):
                 if fila["Distribucion"] == "Triangular":
                     variables[fila["Variable"]] = np.random.triangular(fila["Param 1"], fila["Param 2"] , fila["Param 3"], parNumSimulaciones)
                 if fila["Tipo Datos"] == "Entero":
-                    variables[fila["Variable"]] = variables[fila["Variable"]].astype(int)
+                    variables[fila["Variable"]] = np.round(valores).astype(int)
+                else:
+                     variables[fila["Variable"]] = valores.astype(float)
 
             # Evalúa la fórmula de simulación
             variables[parVariableResultado] = eval(formulaSimulacion)
