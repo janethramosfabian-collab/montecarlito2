@@ -1,18 +1,16 @@
 # Importa las librerías necesarias
-import streamlit as st  # Para crear la interfaz web. Instalar con: pip install streamlit
-import pandas as pd  # Para manipular datos en formato tabular. Instalar con: pip install pandas
-import numpy as np  # Para realizar cálculos numéricos. Instalar con: pip install numpy
-import plotly.express as px  # Para crear gráficos interactivos. Instalar con: pip install plotly
-import montecarlo as mc # Para las funciones de la simulación.
-from code_editor import code_editor # Para editar el código en la app. Instalar con: pip install streamlit-code-editor
-import utils as ut  # Para funciones de utilidad personalizadas. Asegúrate de tener el archivo utils.py en el mismo directorio.
-
-# Ejemplo {{ventas}} * ({{precio}}-({{precio}}*0.1*{{descuento}}))
+import streamlit as st  # Para crear la interfaz web
+import pandas as pd  # Para manipular datos en formato tabular
+import numpy as np  # Para realizar cálculos numéricos
+import plotly.express as px  # Para crear gráficos interactivos
+import montecarlo as mc # Para las funciones de la simulación
+from code_editor import code_editor # Para editar el código en la app
+import utils as ut  # Para funciones de utilidad personalizadas
 
 # Configura la página de Streamlit
 st.set_page_config(page_title="Simulador de Montecarlo", layout="wide")
 # Aplica estilos CSS personalizados
-ut.local_css("estilos.css") # Asegúrate de tener el archivo estilos.css en el mismo directorio.
+ut.local_css("estilos.css")
 
 # Título principal de la aplicación
 st.title(':material/analytics: Simulador de Montecarlo')
@@ -51,7 +49,7 @@ with st.container(border=True, key="panel-parametros"):
         # Crea dos columnas para la edición de variables y la información de distribuciones
         columns = st.columns(2)
         with columns[0]:
-            # Data editor para configurar las variables
+            # Data editor para configurar las variables con las nuevas distribuciones añadidas
             dfVariables = st.data_editor(dfBase,
                                         column_config={
                                             "Variable": st.column_config.TextColumn(
@@ -67,6 +65,9 @@ with st.container(border=True, key="panel-parametros"):
                                                     "Uniforme",
                                                     "Binomial",
                                                     "Triangular",
+                                                    "Exponencial",
+                                                    "Poisson",
+                                                    "Log-Normal",
                                                 ],
                                                 required=True,
                                             ),
@@ -86,11 +87,11 @@ with st.container(border=True, key="panel-parametros"):
             btnSimular = st.button('Simular', type="primary")
             # Calcula el valor mínimo de los parámetros
             minValorParametros = dfVariables.apply(lambda x: x["Param 1"] + x["Param 2"]+ x["Param 3"], axis=1).min()
-            # Muestra un mensaje de error si los parámetros son cero
+            # Muestra un mensaje de error si los parámetros principales son cero
             if minValorParametros == 0:
-                st.error("Algunas de las variables tienen los Param 1, Param 2 y Param 3 en cero", icon=":material/warning:")
+                st.error("Algunas de las variables tienen los parámetros principales en cero", icon=":material/warning:")
         with columns[1]:
-            # Texto informativo sobre las distribuciones
+            # Texto informativo actualizado con la nueva caja de herramientas estadísticas
             textoDistribuciones = """### Distribuciones
 **Normal** Distribución en forma de campana, valores cerca de la media.
 * *Param 1:* Media de la distribución.
@@ -112,6 +113,19 @@ with st.container(border=True, key="panel-parametros"):
 * *Param 2:* Valor más probable.
 * *Param 3:* Valor máximo del rango.
 * **Casos de uso:** Estimaciones, riesgos, incertidumbre.
+
+**Exponencial:** Modela el tiempo entre eventos en un proceso de Poisson.
+* *Param 1:* Escala (media / 1 medida de tasa).
+* **Casos de uso:** Tiempos de espera, durabilidad de componentes.
+
+**Poisson:** Modela el número de eventos en un intervalo de tiempo o espacio.
+* *Param 1:* Tasa media de ocurrencia ($\lambda$).
+* **Casos de uso:** Conteo de llamadas, llegadas de clientes, fallas.
+
+**Log-Normal:** Variables cuyo logaritmo está normalmente distribuido.
+* *Param 1:* Media logarítmica.
+* *Param 2:* Desviación estándar logarítmica.
+* **Casos de uso:** Precios de activos financieros, salarios, tamaños de reservas.
             """
             with st.container(height=300):
                 st.info(textoDistribuciones)
@@ -129,23 +143,35 @@ with st.container(border=True, key="panel-analisis"):
             st.stop()
         # Si no hay resultados en la sesión o se ha presionado el botón Simular
         if len(st.session_state.resultado) == 0 or btnSimular:
-            # Subtítulo para la sección de resultados            
             # Declaramos un diccionario para almacenar las variables
             variables = dict()
             # Itera sobre las variables y genera valores aleatorios según la distribución seleccionada
             for index, fila in dfVariables.iterrows():
-                if fila["Distribucion"] == "Normal":
-                    variables[fila["Variable"]] = np.random.normal(fila["Param 1"], fila["Param 2"], parNumSimulaciones)
-                if fila["Distribucion"] == "Uniforme":
-                    variables[fila["Variable"]] = np.random.uniform(fila["Param 1"], fila["Param 2"], parNumSimulaciones)
-                if fila["Distribucion"] == "Binomial":
-                    variables[fila["Variable"]] = np.random.binomial(fila["Param 1"], fila["Param 2"], parNumSimulaciones)
-                if fila["Distribucion"] == "Triangular":
-                    variables[fila["Variable"]] = np.random.triangular(fila["Param 1"], fila["Param 2"] , fila["Param 3"], parNumSimulaciones)
+                dist = fila["Distribucion"]
+                p1 = fila["Param 1"]
+                p2 = fila["Param 2"]
+                p3 = fila["Param 3"]
+                
+                if dist == "Normal":
+                    valores = np.random.normal(p1, p2, parNumSimulaciones)
+                elif dist == "Uniforme":
+                    valores = np.random.uniform(p1, p2, parNumSimulaciones)
+                elif dist == "Binomial":
+                    valores = np.random.binomial(int(p1), p2, parNumSimulaciones)
+                elif dist == "Triangular":
+                    valores = np.random.triangular(p1, p2, p3, parNumSimulaciones)
+                elif dist == "Exponencial":
+                    valores = np.random.exponential(scale=p1, size=parNumSimulaciones)
+                elif dist == "Poisson":
+                    valores = np.random.poisson(lam=p1, size=parNumSimulaciones)
+                elif dist == "Log-Normal":
+                    valores = np.random.lognormal(mean=p1, sigma=p2, size=parNumSimulaciones)
+                
+                # Manejo limpio y estricto de tipos de datos
                 if fila["Tipo Datos"] == "Entero":
                     variables[fila["Variable"]] = np.round(valores).astype(int)
                 else:
-                     variables[fila["Variable"]] = valores.astype(float)
+                    variables[fila["Variable"]] = valores.astype(float)
 
             # Evalúa la fórmula de simulación
             variables[parVariableResultado] = eval(formulaSimulacion)
@@ -157,6 +183,7 @@ with st.container(border=True, key="panel-analisis"):
         else:
             # Si ya hay resultados en la sesión, los carga
             dfResultado = st.session_state.resultado
+            
         # Subtítulo para la sección de resultados
         st.subheader(':green[:material/insights: Resultados de la simulación]')
         # Crea dos pestañas para mostrar los resultados: Análisis y Datos
