@@ -48,8 +48,8 @@ with st.container(border=True, key="panel-parametros"):
         dfBase = pd.DataFrame({'Variable': listaNombreVariables, "Distribucion": "Normal", "Tipo Datos": "Decimales", "Param 1": 0.0000, "Param 2": 0.000,"Param 3": 0.000})
         # Crea dos columnas para la edición de variables y la información de distribuciones
         columns = st.columns(2)
-        with columns[0]:
-            # Data editor para configurar las variables con las nuevas distribuciones añadidas
+with columns[0]:
+            # Data editor para configurar las variables
             dfVariables = st.data_editor(dfBase,
                                         column_config={
                                             "Variable": st.column_config.TextColumn(
@@ -61,13 +61,8 @@ with st.container(border=True, key="panel-parametros"):
                                                 help="Distribución de probabilidad de la simulación",
                                                 width="medium",
                                                 options=[
-                                                    "Normal",
-                                                    "Uniforme",
-                                                    "Binomial",
-                                                    "Triangular",
-                                                    "Exponencial",
-                                                    "Poisson",
-                                                    "Log-Normal",
+                                                    "Normal", "Uniforme", "Binomial", 
+                                                    "Triangular", "Exponencial", "Poisson", "Log-Normal"
                                                 ],
                                                 required=True,
                                             ),
@@ -75,19 +70,33 @@ with st.container(border=True, key="panel-parametros"):
                                                 "Tipo de Datos",
                                                 help="Tipo de datos de la variable",
                                                 width="medium",
-                                                options=[
-                                                    "Entero",
-                                                    "Decimales",
-                                                ],
+                                                options=["Entero", "Decimales"],
                                                 required=True,
                                             )
                                         },
                                         hide_index=True, use_container_width=True)
+            
+            # --- PEGAS AQUÍ EL PRIMER CÓDIGO (EL EXPANDER) ---
+            with st.expander("🔗 Configuración Avanzada: Variables Correlacionadas / Escenarios Conjuntos", expanded=False):
+                st.write("Si tus variables dependen de un escenario conjunto (ej. Hot, OK, Slow), configúralas aquí para mantener la correlación.")
+                usar_escenarios = st.checkbox("Habilitar Escenarios Conjuntos para variables dependientes")
+                
+                dfEscenarios = pd.DataFrame()
+                if usar_escenarios:
+                    datos_escenario_base = {
+                        "Escenario": ["Optimista (Hot)", "Normal (OK)", "Pesimista (Slow)"],
+                        "Probabilidad": [0.33, 0.34, 0.33],
+                        "volumen": [100000, 75000, 50000],
+                        "precio": [8.0, 10.0, 11.0]
+                    }
+                    dfEscenarios = st.data_editor(pd.DataFrame(datos_escenario_base), num_rows="dynamic", use_container_width=True)
+            # -------------------------------------------------
+
             # Botón para iniciar la simulación
             btnSimular = st.button('Simular', type="primary")
+            
             # Calcula el valor mínimo de los parámetros
             minValorParametros = dfVariables.apply(lambda x: x["Param 1"] + x["Param 2"]+ x["Param 3"], axis=1).min()
-            # Muestra un mensaje de error si los parámetros principales son cero
             if minValorParametros == 0:
                 st.error("Algunas de las variables tienen los parámetros principales en cero", icon=":material/warning:")
         with columns[1]:
@@ -146,32 +155,44 @@ with st.container(border=True, key="panel-analisis"):
             # Declaramos un diccionario para almacenar las variables
             variables = dict()
             # Itera sobre las variables y genera valores aleatorios según la distribución seleccionada
+# Itera sobre las variables y genera valores aleatorios según la distribución o escenario
             for index, fila in dfVariables.iterrows():
-                dist = fila["Distribucion"]
-                p1 = fila["Param 1"]
-                p2 = fila["Param 2"]
-                p3 = fila["Param 3"]
+                var_nombre = fila["Variable"]
                 
-                if dist == "Normal":
-                    valores = np.random.normal(p1, p2, parNumSimulaciones)
-                elif dist == "Uniforme":
-                    valores = np.random.uniform(p1, p2, parNumSimulaciones)
-                elif dist == "Binomial":
-                    valores = np.random.binomial(int(p1), p2, parNumSimulaciones)
-                elif dist == "Triangular":
-                    valores = np.random.triangular(p1, p2, p3, parNumSimulaciones)
-                elif dist == "Exponencial":
-                    valores = np.random.exponential(scale=p1, size=parNumSimulaciones)
-                elif dist == "Poisson":
-                    valores = np.random.poisson(lam=p1, size=parNumSimulaciones)
-                elif dist == "Log-Normal":
-                    valores = np.random.lognormal(mean=p1, sigma=p2, size=parNumSimulaciones)
+                # Si se habilitaron escenarios y esta variable está en la tabla de escenarios, se vincula
+                if usar_escenarios and not dfEscenarios.empty and var_nombre in dfEscenarios.columns:
+                    # Selecciona aleatoriamente los escenarios según sus probabilidades
+                    probs = dfEscenarios["Probabilidad"].values
+                    probs = probs / probs.sum() # Normalizar por seguridad
+                    escenarios_idx = np.random.choice(dfEscenarios.index, size=parNumSimulaciones, p=probs)
+                    valores = dfEscenarios.loc[escenarios_idx, var_nombre].values
+                else:
+                    # Comportamiento estándar por distribuciones independientes
+                    dist = fila["Distribucion"]
+                    p1 = fila["Param 1"]
+                    p2 = fila["Param 2"]
+                    p3 = fila["Param 3"]
+                    
+                    if dist == "Normal":
+                        valores = np.random.normal(p1, p2, parNumSimulaciones)
+                    elif dist == "Uniforme":
+                        valores = np.random.uniform(p1, p2, parNumSimulaciones)
+                    elif dist == "Binomial":
+                        valores = np.random.binomial(int(p1), p2, parNumSimulaciones)
+                    elif dist == "Triangular":
+                        valores = np.random.triangular(p1, p2, p3, parNumSimulaciones)
+                    elif dist == "Exponencial":
+                        valores = np.random.exponential(scale=p1, size=parNumSimulaciones)
+                    elif dist == "Poisson":
+                        valores = np.random.poisson(lam=p1, size=parNumSimulaciones)
+                    elif dist == "Log-Normal":
+                        valores = np.random.lognormal(mean=p1, sigma=p2, size=parNumSimulaciones)
                 
                 # Manejo limpio y estricto de tipos de datos
                 if fila["Tipo Datos"] == "Entero":
-                    variables[fila["Variable"]] = np.round(valores).astype(int)
+                    variables[var_nombre] = np.round(valores).astype(int)
                 else:
-                    variables[fila["Variable"]] = valores.astype(float)
+                    variables[var_nombre] = valores.astype(float)
 
             # Evalúa la fórmula de simulación
             variables[parVariableResultado] = eval(formulaSimulacion)
