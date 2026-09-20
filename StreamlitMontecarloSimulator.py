@@ -77,19 +77,21 @@ with st.container(border=True, key="panel-parametros"):
                                         hide_index=True, use_container_width=True)
             
             # --- PEGAS AQUÍ EL PRIMER CÓDIGO (EL EXPANDER) ---
+# --- PANEL DE ESCENARIOS CONJUNTOS 100% DINÁMICO Y VACÍO ---
             with st.expander("🔗 Configuración Avanzada: Variables Correlacionadas / Escenarios Conjuntos", expanded=False):
-                st.write("Si tus variables dependen de un escenario conjunto (ej. Hot, OK, Slow), configúralas aquí para mantener la correlación.")
+                st.write("Si tus variables dependen de un escenario conjunto (discreto), habilítalo y define tus propias columnas y valores.")
                 usar_escenarios = st.checkbox("Habilitar Escenarios Conjuntos para variables dependientes")
                 
                 dfEscenarios = pd.DataFrame()
                 if usar_escenarios:
-                    datos_escenario_base = {
-                        "Escenario": ["Optimista (Hot)", "Normal (OK)", "Pesimista (Slow)"],
-                        "Probabilidad": [0.33, 0.34, 0.33],
-                        "volumen": [100000, 75000, 50000],
-                        "precio": [8.0, 10.0, 11.0]
+                    # Inicializamos una tabla vacía genérica para que el usuario construya sus propios escenarios
+                    datos_vacia = {
+                        "Escenario": ["Escenario 1", "Escenario 2"],
+                        "Probabilidad": [0.5, 0.5],
                     }
-                    dfEscenarios = st.data_editor(pd.DataFrame(datos_escenario_base), num_rows="dynamic", use_container_width=True)
+                    st.info("Agrega las columnas con el nombre exacto de tus variables (ej. el nombre que uses en la fórmula con {{ }}).", icon=":material/info:")
+                    dfEscenarios = st.data_editor(pd.DataFrame(datos_vacia), num_rows="dynamic", use_container_width=True)
+            # -------------------------------------------------------------
             # -------------------------------------------------
 
             # Botón para iniciar la simulación
@@ -156,16 +158,23 @@ with st.container(border=True, key="panel-analisis"):
             variables = dict()
             # Itera sobre las variables y genera valores aleatorios según la distribución seleccionada
 # Itera sobre las variables y genera valores aleatorios según la distribución o escenario
+# Itera sobre las variables y genera valores aleatorios según la distribución o escenario personalizado
             for index, fila in dfVariables.iterrows():
                 var_nombre = fila["Variable"]
                 
-                # Si se habilitaron escenarios y esta variable está en la tabla de escenarios, se vincula
+                # Si se habilitaron escenarios y el usuario creó una columna con el nombre exacto de la variable
                 if usar_escenarios and not dfEscenarios.empty and var_nombre in dfEscenarios.columns:
-                    # Selecciona aleatoriamente los escenarios según sus probabilidades
-                    probs = dfEscenarios["Probabilidad"].values
-                    probs = probs / probs.sum() # Normalizar por seguridad
-                    escenarios_idx = np.random.choice(dfEscenarios.index, size=parNumSimulaciones, p=probs)
-                    valores = dfEscenarios.loc[escenarios_idx, var_nombre].values
+                    if "Probabilidad" in dfEscenarios.columns:
+                        probs = pd.to_numeric(dfEscenarios["Probabilidad"], errors='coerce').fillna(0).values
+                        if probs.sum() > 0:
+                            probs = probs / probs.sum() # Normalizar
+                            escenarios_idx = np.random.choice(dfEscenarios.index, size=parNumSimulaciones, p=probs)
+                            valores = pd.to_numeric(dfEscenarios.loc[escenarios_idx, var_nombre], errors='coerce').values
+                        else:
+                            valores = np.zeros(parNumSimulaciones)
+                    else:
+                        st.error("La tabla de escenarios conjuntos debe incluir una columna llamada 'Probabilidad'.")
+                        st.stop()
                 else:
                     # Comportamiento estándar por distribuciones independientes
                     dist = fila["Distribucion"]
