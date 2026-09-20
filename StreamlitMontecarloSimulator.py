@@ -48,7 +48,7 @@ with st.container(border=True, key="panel-parametros"):
         dfBase = pd.DataFrame({'Variable': listaNombreVariables, "Distribucion": "Normal", "Tipo Datos": "Decimales", "Param 1": 0.0000, "Param 2": 0.000,"Param 3": 0.000})
         # Crea dos columnas para la edición de variables y la información de distribuciones
         columns = st.columns(2)
-with columns[0]:
+        with columns[0]:
             # Data editor para configurar las variables
             dfVariables = st.data_editor(dfBase,
                                         column_config={
