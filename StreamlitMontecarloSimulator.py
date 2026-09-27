@@ -185,7 +185,10 @@ if btnSimular or len(st.session_state.resultado) > 0:
         dfResultado = st.session_state.resultado
 
    # --- BOTÓN DE SIMULACIÓN Y CÁLCULO ---
-if st.button("Simular", type="primary"):
+# Asigna un key único al botón para evitar el StreamlitDuplicateElementId
+if st.button("Simular", type="primary", key="btn_simular_principal"):
+    # Tu lógica de simulación
+    pass
     with st.spinner("Ejecutando simulación de Montecarlo..."):
         # Tu función de simulación aquí
         dfResultado = ejecutar_simulacion(...) # Asegúrate de asignar la variable aquí
