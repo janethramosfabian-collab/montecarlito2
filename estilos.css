@@ -1,63 +1,68 @@
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-panel-parametros),
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-panel-analisis)
-{
-    background-color:white
-}
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-ecuacion),
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-resultados)
-{
-    background-color:white
-}
-div[data-baseweb="tab-list"] p,
-label[data-testid="stMetricLabel"] p, /*Para la etiqueta de las métricas*/
-label[data-testid="stWidgetLabel"] p /*Para la etiqueta de los input*/
-{
-    font-size: 20px;
-}
-
-div[data-testid="stMetricValue"]{
-    font-weight:bold;
-    color: #7393b1;
-}
-
-div[class*='st-key-chart']
-{
-    /* border: 1px solid grey; */
-    overflow:hidden;
-    border-radius: 10px;        
-}
-/* Color del valor de las métricas en azul corporativo */
-div[data-testid="stMetricValue"] {
-    font-weight: bold;
-    color: #105cc6 !important;
-}
-/* Fondo general con degradado plomo a azul oscuro */
+/* =========================================================
+   1. FONDO DE LA APP CON GRADIENTE AZUL/PLOMO
+   ========================================================= */
 .stApp {
-    background: linear-gradient(135deg, #2c3e50 0%, #0f2027 50%, #203a43 100%) !important;
-    color: #ecf0f1;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%) !important;
+    color: #f8fafc !important;
 }
 
-/* Tarjetas y contenedor de contenido en blanco */
-div[data-testid="stVerticalBlockBorderWrapper"] {
+/* Ocultar el header superior de Streamlit */
+header[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+
+/* =========================================================
+   2. TARJETAS BLANCAS (Para que los gráficos destaquen)
+   ========================================================= */
+div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-panel-parametros),
+div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-panel-analisis),
+div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-ecuacion),
+div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-resultado) {
     background-color: #ffffff !important;
     border-radius: 10px !important;
-    padding: 15px !important;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2) !important;
-    color: #2c3e50 !important;
+    padding: 16px !important;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Tipografía dentro de las tarjetas */
-div[data-testid="stVerticalBlockBorderWrapper"] * {
-    color: #2c3e50 !important;
+/* =========================================================
+   3. TIPOGRAFÍA Y LABELS DENTRO DE TARJETAS BLANCAS
+   ========================================================= */
+div[data-testid="stVerticalBlockBorderWrapper"] p,
+div[data-testid="stVerticalBlockBorderWrapper"] label,
+div[data-testid="stVerticalBlockBorderWrapper"] span {
+    color: #1e293b !important;
 }
 
-/* Pestañas */
+/* Etiquetas de métricas y widgets */
+label[data-testid="stMetricLabel"] p,
+label[data-testid="stWidgetLabel"] p {
+    font-weight: 600 !important;
+    font-size: 15px !important;
+}
+
+/* Valores numéricos de las métricas en azul corporativo */
+div[data-testid="stMetricValue"] div {
+    font-weight: 700 !important;
+    color: #105cc6 !important;
+}
+
+/* =========================================================
+   4. PESTAÑAS (TABS ESTILO @RISK)
+   ========================================================= */
+div[data-baseweb="tab-list"] p {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
 button[data-baseweb="tab"] {
-    color: #bdc3c7 !important;
-    font-weight: bold !important;
+    color: #94a3b8 !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
     color: #2ecc71 !important;
     border-bottom-color: #2ecc71 !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] p {
+    color: #2ecc71 !important;
 }
