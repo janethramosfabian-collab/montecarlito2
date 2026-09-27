@@ -1,68 +1,79 @@
 /* =========================================================
-   1. FONDO DE LA APP CON GRADIENTE AZUL/PLOMO
+   1. FONDO GLOBAL: GRADIENTE AZUL PLOMO A BLANCO
    ========================================================= */
 .stApp {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%) !important;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 40%, #e2e8f0 85%, #f8fafc 100%) !important;
     color: #f8fafc !important;
 }
 
-/* Ocultar el header superior de Streamlit */
+/* Header transparente */
 header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
 /* =========================================================
-   2. TARJETAS BLANCAS (Para que los gráficos destaquen)
+   2. TEXTOS Y MÉTRICAS EN AZUL CLARO / CELESTE CIAN
    ========================================================= */
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-panel-parametros),
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-panel-analisis),
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-ecuacion),
-div[data-testid="stVerticalBlockBorderWrapper"] div div div:has(div.st-key-resultado) {
-    background-color: #ffffff !important;
-    border-radius: 10px !important;
-    padding: 16px !important;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15) !important;
+/* Títulos y textos principales */
+h1, h2, h3, h4, h5, h6, .stMarkdown p {
+    color: #f8fafc !important;
+}
+
+/* Textos secundarios y métricas en Azul Claro Brillante */
+label[data-testid="stWidgetLabel"] p,
+label[data-testid="stMetricLabel"] p {
+    color: #7dd3fc !important; /* Celeste legible */
+    font-weight: 600 !important;
+}
+
+div[data-testid="stMetricValue"] div {
+    color: #38bdf8 !important; /* Azul claro fluorescente */
+    font-weight: 700 !important;
 }
 
 /* =========================================================
-   3. TIPOGRAFÍA Y LABELS DENTRO DE TARJETAS BLANCAS
+   3. TARJETAS BLANCAS Y CONTENEDORES CON ACENTO JADE ELEGANTE
    ========================================================= */
+/* Estilo para las tarjetas interiores que contienen los gráficos */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #ffffff !important;
+    border-top: 4px solid #0f766e !important; /* Acento Jade Elegante */
+    border-radius: 12px !important;
+    padding: 18px !important;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Textos que quedan DENTRO de las tarjetas blancas */
 div[data-testid="stVerticalBlockBorderWrapper"] p,
 div[data-testid="stVerticalBlockBorderWrapper"] label,
-div[data-testid="stVerticalBlockBorderWrapper"] span {
-    color: #1e293b !important;
+div[data-testid="stVerticalBlockBorderWrapper"] span,
+div[data-testid="stVerticalBlockBorderWrapper"] h1,
+div[data-testid="stVerticalBlockBorderWrapper"] h2,
+div[data-testid="stVerticalBlockBorderWrapper"] h3 {
+    color: #0f172a !important; /* Texto oscuro sobre blanco */
 }
 
-/* Etiquetas de métricas y widgets */
-label[data-testid="stMetricLabel"] p,
-label[data-testid="stWidgetLabel"] p {
-    font-weight: 600 !important;
-    font-size: 15px !important;
+div[data-testid="stVerticalBlockBorderWrapper"] label[data-testid="stMetricLabel"] p {
+    color: #0f766e !important; /* Etiqueta Jade */
 }
 
-/* Valores numéricos de las métricas en azul corporativo */
-div[data-testid="stMetricValue"] div {
-    font-weight: 700 !important;
-    color: #105cc6 !important;
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stMetricValue"] div {
+    color: #0284c7 !important; /* Valor Azul Claro en tarjeta */
 }
 
 /* =========================================================
    4. PESTAÑAS (TABS ESTILO @RISK)
    ========================================================= */
-div[data-baseweb="tab-list"] p {
-    font-size: 16px !important;
+button[data-baseweb="tab"] {
+    color: #94a3b8 !important;
     font-weight: 600 !important;
 }
 
-button[data-baseweb="tab"] {
-    color: #94a3b8 !important;
-}
-
 button[data-baseweb="tab"][aria-selected="true"] {
-    color: #2ecc71 !important;
-    border-bottom-color: #2ecc71 !important;
+    color: #38bdf8 !important; /* Azul Claro activo */
+    border-bottom-color: #0f766e !important; /* Línea Jade */
 }
 
 button[data-baseweb="tab"][aria-selected="true"] p {
-    color: #2ecc71 !important;
+    color: #38bdf8 !important;
 }
