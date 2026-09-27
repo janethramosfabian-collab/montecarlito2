@@ -1,5 +1,5 @@
 /* =========================================================
-   1. FONDO GLOBAL Y TEXTOS EN CELESTE
+   1. FONDO GENERAL Y TEXTOS
    ========================================================= */
 .stApp {
     background-color: #0b132b !important;
@@ -10,68 +10,54 @@ header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
-/* Todos los títulos y etiquetas fuera de tarjetas */
-.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp label, .stMarkdown {
-    color: #38bdf8 !important;
+/* Ocultar contenedores flotantes negros/oscuros de Streamlit */
+div[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stColumn"] > div {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* =========================================================
    2. VENTANA UNIFICADA TIPO @RISK (UN SOLO MARCO BLANCO)
    ========================================================= */
-/* Quitar los micro-cuadros negros por defecto de Streamlit */
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-}
-
-/* Marco principal blanco contenedor */
-div.window-risk {
+.risk-window-container {
     background-color: #ffffff !important;
-    border: 2px solid #cbd5e1 !important;
+    border: 2px solid #94a3b8 !important;
     border-radius: 12px !important;
     padding: 20px !important;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4) !important;
     margin-top: 15px !important;
-}
-
-/* Textos dentro del marco blanco */
-div.window-risk p,
-div.window-risk label,
-div.window-risk span,
-div.window-risk td,
-div.window-risk th {
-    color: #1e293b !important;
-}
-
-div.window-risk h1,
-div.window-risk h2,
-div.window-risk h3,
-div.window-risk h4 {
     color: #0f172a !important;
-    font-weight: 700 !important;
 }
 
-/* Estilo para las métricas internas dentro del panel */
-div.window-risk div[data-testid="stMetric"] {
+/* Forzar color de texto dentro de la ventana de resultados */
+.risk-window-container *,
+.risk-window-container p,
+.risk-window-container span,
+.risk-window-container label,
+.risk-window-container div {
+    color: #0f172a !important;
+}
+
+/* Estilos de Pestañas superiores (Tabs) */
+button[data-baseweb="tab"] {
     background-color: #f1f5f9 !important;
+    border-radius: 6px 6px 0 0 !important;
     border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    padding: 8px 12px !important;
+    border-bottom: none !important;
+    margin-right: 4px !important;
+    padding: 6px 16px !important;
 }
 
-div.window-risk div[data-testid="stMetricValue"] div {
-    color: #0284c7 !important;
-    font-weight: 700 !important;
-}
-
-/* =========================================================
-   3. PESTAÑAS DENTRO DEL PANEL
-   ========================================================= */
 button[data-baseweb="tab"] p {
-    color: #475569 !important;
+    color: #334155 !important;
     font-weight: 600 !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    background-color: #ffffff !important;
+    border-top: 3px solid #0284c7 !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] p {
@@ -79,16 +65,15 @@ button[data-baseweb="tab"][aria-selected="true"] p {
     font-weight: 700 !important;
 }
 
-button[data-baseweb="tab"][aria-selected="true"] {
-    border-bottom: 3px solid #0284c7 !important;
+/* Tablas de estadísticas/percentiles dentro de la ventana */
+.risk-window-container div[data-testid="stDataFrame"] {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
 }
 
-/* Cajas de notificación */
-div[data-testid="stAlert"] {
-    background-color: #e0f2fe !important;
-    border: 1px solid #38bdf8 !important;
-}
-
-div[data-testid="stAlert"] p {
-    color: #0369a1 !important;
+/* Ajustes de métricas dentro de la ventana */
+div[data-testid="stMetricValue"] div {
+    color: #0284c7 !important;
+    font-weight: 700 !important;
 }
