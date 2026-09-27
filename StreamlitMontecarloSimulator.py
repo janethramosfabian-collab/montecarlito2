@@ -184,96 +184,96 @@ if btnSimular or len(st.session_state.resultado) > 0:
     else:
         dfResultado = st.session_state.resultado
 
-    # Subtítulo principal
-st.subheader('Resultados de la Simulación')
+   # --- BOTÓN DE SIMULACIÓN Y CÁLCULO ---
+if st.button("Simular", type="primary"):
+    with st.spinner("Ejecutando simulación de Montecarlo..."):
+        # Tu función de simulación aquí
+        dfResultado = ejecutar_simulacion(...) # Asegúrate de asignar la variable aquí
+        st.session_state['dfResultado'] = dfResultado
 
-# ENVOLTORIO ÚNICO: Todo dentro de un solo cuadro blanco con bordes redondeados
-st.markdown('<div class="window-risk">', unsafe_allow_html=True)
+# --- SECCIÓN DE RESULTADOS ---
+# Verificamos que dfResultado exista en la sesión para evitar NameError
+if 'dfResultado' in st.session_state and not st.session_state['dfResultado'].empty:
+    dfResultado = st.session_state['dfResultado']
+    
+    st.subheader('Resultados de la Simulación')
 
-tabAnalisis, tabSensibilidad, tabDatos = st.tabs(["📊 Histograma y Frecuencia", "🌪️ Sensibilidad (Tornado)", "📋 Datos de Simulaciones"])
+    # UN SOLO CUADRO CONTENEDOR CON BORDES REDONDEADOS
+    st.markdown('<div class="window-risk">', unsafe_allow_html=True)
 
-with tabAnalisis:
-    if parVariableResultado in dfResultado.columns and not dfResultado.empty:
-        vals = dfResultado[parVariableResultado].dropna()
-        
-        # Columna izquierda (Slider + Métricas + Gráfico) y Columna derecha (Estadísticas + Tabla)
-        col_grafico, col_stats = st.columns([7, 3])
-        
-        with col_grafico:
-            rangoPercentiles = [2.5, 5, 25, 50, 75, 95, 97.5]
-            percentiles = np.percentile(vals, rangoPercentiles)
+    tabAnalisis, tabSensibilidad, tabDatos = st.tabs(["📊 Histograma y Frecuencia", "🌪️ Sensibilidad (Tornado)", "📋 Datos de Simulaciones"])
+
+    with tabAnalisis:
+        if parVariableResultado in dfResultado.columns:
+            vals = dfResultado[parVariableResultado].dropna()
             
-            min_val = float(vals.min())
-            max_val = float(vals.max())
-            if min_val == max_val:
-                max_val += 0.01
+            col_grafico, col_stats = st.columns([7, 3])
             
-            parMontoProbabilidad = st.slider('Rango de Delimitadores (Cutoffs)', 
-                                             min_val, max_val,
-                                             (float(percentiles[0]), float(percentiles[-1])))
-            
-            dfRango = dfResultado[(dfResultado[parVariableResultado] >= parMontoProbabilidad[0]) & 
-                                  (dfResultado[parVariableResultado] <= parMontoProbabilidad[1])]
-            probabilidadMonto = len(dfRango) / parNumSimulaciones if parNumSimulaciones > 0 else 0
-            
-            # Métricas superiores en azul claro
-            m_cols = st.columns(3)
-            m_cols[0].metric(label="Probabilidad (Likelihood)", value=f"{probabilidadMonto:,.2%}")
-            m_cols[1].metric(label="Corte Inferior", value=f"{parMontoProbabilidad[0]:,.2f}")
-            m_cols[2].metric(label="Corte Superior", value=f"{parMontoProbabilidad[1]:,.2f}")
-            
-            # Gráfico de Plotly integrado
-            fig_hist = go.Figure()
-            
-            df_fuera = dfResultado[(dfResultado[parVariableResultado] < parMontoProbabilidad[0]) | 
-                                  (dfResultado[parVariableResultado] > parMontoProbabilidad[1])]
-            
-            fig_hist.add_trace(go.Histogram(
-                x=df_fuera[parVariableResultado],
-                marker=dict(color='#A3E4D7', line=dict(color='#ffffff', width=0.5)),
-                showlegend=False
-            ))
+            with col_grafico:
+                rangoPercentiles = [2.5, 5, 25, 50, 75, 95, 97.5]
+                percentiles = np.percentile(vals, rangoPercentiles)
+                
+                min_val = float(vals.min())
+                max_val = float(vals.max())
+                if min_val == max_val:
+                    max_val += 0.01
+                
+                parMontoProbabilidad = st.slider('Rango de Delimitadores (Cutoffs)', 
+                                                 min_val, max_val,
+                                                 (float(percentiles[0]), float(percentiles[-1])))
+                
+                dfRango = dfResultado[(dfResultado[parVariableResultado] >= parMontoProbabilidad[0]) & 
+                                      (dfResultado[parVariableResultado] <= parMontoProbabilidad[1])]
+                probabilidadMonto = len(dfRango) / len(dfResultado) if len(dfResultado) > 0 else 0
+                
+                # Métricas en cajas celestes claras con texto azul oscuro
+                m_cols = st.columns(3)
+                m_cols[0].metric(label="Probabilidad (Likelihood)", value=f"{probabilidadMonto:,.2%}")
+                m_cols[1].metric(label="Corte Inferior", value=f"{parMontoProbabilidad[0]:,.2f}")
+                m_cols[2].metric(label="Corte Superior", value=f"{parMontoProbabilidad[1]:,.2f}")
+                
+                # Gráfico
+                fig_hist = go.Figure()
+                df_fuera = dfResultado[(dfResultado[parVariableResultado] < parMontoProbabilidad[0]) | 
+                                      (dfResultado[parVariableResultado] > parMontoProbabilidad[1])]
+                
+                fig_hist.add_trace(go.Histogram(x=df_fuera[parVariableResultado], marker=dict(color='#A3E4D7'), showlegend=False))
+                fig_hist.add_trace(go.Histogram(x=dfRango[parVariableResultado], marker=dict(color='#2ECC71'), showlegend=False))
+                fig_hist.add_vline(x=parMontoProbabilidad[0], line_dash="dash", line_color="#E74C3C", line_width=2)
+                fig_hist.add_vline(x=parMontoProbabilidad[1], line_dash="dash", line_color="#E74C3C", line_width=2)
 
-            fig_hist.add_trace(go.Histogram(
-                x=dfRango[parVariableResultado],
-                marker=dict(color='#2ECC71', line=dict(color='#ffffff', width=0.5)),
-                showlegend=False
-            ))
+                fig_hist.update_layout(
+                    title=dict(text=f"<b>Simulation Results: {parVariableResultado}</b>", font=dict(color='#0f172a', size=16)),
+                    barmode='overlay',
+                    plot_bgcolor='#ffffff',
+                    paper_bgcolor='#ffffff',
+                    margin=dict(l=10, r=10, t=40, b=10),
+                    xaxis=dict(title=f"Valores de {parVariableResultado}", gridcolor='#e2e8f0', title_font=dict(color='#1e293b')),
+                    yaxis=dict(title="Frecuencia", gridcolor='#e2e8f0', title_font=dict(color='#1e293b')),
+                    font=dict(color='#1e293b')
+                )
+                
+                st.plotly_chart(fig_hist, use_container_width=True)
 
-            fig_hist.add_vline(x=parMontoProbabilidad[0], line_dash="dash", line_color="#E74C3C", line_width=2)
-            fig_hist.add_vline(x=parMontoProbabilidad[1], line_dash="dash", line_color="#E74C3C", line_width=2)
+            with col_stats:
+                st.markdown("#### Estadísticas")
+                st.metric(label="Simulaciones", value=f"{len(dfResultado):,}")
+                st.metric(label="Media", value=f"{vals.mean():,.2f}")
+                st.metric(label="Desv. Estándar", value=f"{vals.std():,.2f}")
+                
+                dfPercentiles = pd.DataFrame({"Percentil": [f"{i}%" for i in rangoPercentiles], "Valor": percentiles})
+                st.dataframe(dfPercentiles, use_container_width=True, hide_index=True)
 
-            fig_hist.update_layout(
-                title=dict(text=f"<b>Simulation Results: {parVariableResultado}</b>", font=dict(color='#0f172a', size=16)),
-                barmode='overlay',
-                plot_bgcolor='#ffffff',
-                paper_bgcolor='#ffffff',
-                margin=dict(l=10, r=10, t=40, b=10),
-                xaxis=dict(title=f"Valores de {parVariableResultado}", gridcolor='#e2e8f0', title_font=dict(color='#1e293b')),
-                yaxis=dict(title="Frecuencia", gridcolor='#e2e8f0', title_font=dict(color='#1e293b')),
-                font=dict(color='#1e293b')
-            )
-            
-            st.plotly_chart(fig_hist, use_container_width=True, key="chart-histograma-risk")
+    with tabSensibilidad:
+        st.markdown("#### Análisis de Sensibilidad (Tornado)")
+        df_corr = sens.calcular_sensibilidad(dfResultado, parVariableResultado)
+        if not df_corr.empty:
+            fig_tornado = sens.generar_grafico_tornado(df_corr)
+            st.plotly_chart(fig_tornado, use_container_width=True)
 
-        with col_stats:
-            st.markdown("#### Estadísticas")
-            st.metric(label="Simulaciones", value=f"{parNumSimulaciones:,}")
-            st.metric(label="Media", value=f"{vals.mean():,.2f}")
-            st.metric(label="Desv. Estándar", value=f"{vals.std():,.2f}")
-            
-            dfPercentiles = pd.DataFrame({"Percentil": [f"{i}%" for i in rangoPercentiles], "Valor": percentiles})
-            st.dataframe(dfPercentiles, use_container_width=True, hide_index=True)
+    with tabDatos:
+        st.dataframe(dfResultado, use_container_width=True)
 
-with tabSensibilidad:
-    st.markdown("#### Análisis de Sensibilidad (Tornado)")
-    df_corr = sens.calcular_sensibilidad(dfResultado, parVariableResultado)
-    if not df_corr.empty:
-        fig_tornado = sens.generar_grafico_tornado(df_corr)
-        st.plotly_chart(fig_tornado, use_container_width=True)
-
-with tabDatos:
-    st.dataframe(dfResultado, use_container_width=True)
-
-# Cierre del cuadro contenedor
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+else:
+    st.info("Haz clic en 'Simular' para generar los resultados.")
