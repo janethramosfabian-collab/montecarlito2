@@ -1,44 +1,57 @@
 /* =========================================================
-   1. FONDO GENERAL AZULINO
+   1. FONDO GLOBAL AZULINO NOCTURNO
    ========================================================= */
 .stApp {
-    background-color: #0f172a !important; /* Azulino oscuro / Slate */
-    color: #e2e8f0 !important;
+    background-color: #0b1329 !important;
+    color: #38bdf8 !important;
 }
 
-/* Header superior transparente */
 header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
-/* Títulos principales sobre el fondo azulino */
-.stApp h1, .stApp h2, .stApp h3 {
-    color: #38bdf8 !important; /* Azul claro brillante */
+/* =========================================================
+   2. TEXTOS LIBRES (FORZADOS A AZUL CLARO / CELESTE)
+   ========================================================= */
+/* Títulos, párrafos, subtítulos, etiquetas y markdown */
+.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
+.stApp p, .stApp span, .stApp label, .stMarkdown {
+    color: #38bdf8 !important; /* Azul Claro / Celeste Neón */
+}
+
+/* Etiquetas de Sliders y Métricas fuera de cajas */
+label[data-testid="stWidgetLabel"] p,
+label[data-testid="stMetricLabel"] p {
+    color: #7dd3fc !important;
+    font-weight: 600 !important;
+}
+
+/* Valores de métricas principales fuera de cajas */
+div[data-testid="stMetricValue"] div {
+    color: #38bdf8 !important;
     font-weight: 700 !important;
 }
 
 /* =========================================================
-   2. CUADROS Y TARJETAS EN BLANCO Y PLOMO SUAVE
+   3. TARJETAS EN BLANCO / PLOMO SUAVE CON TEXTO OSCURO DENTRO
    ========================================================= */
 div[data-testid="stVerticalBlockBorderWrapper"] {
-    background-color: #f8fafc !important; /* Plomo ultra claro / Blanco */
-    border: 1px solid #cbd5e1 !important; /* Borde plomo suave */
+    background-color: #f8fafc !important; /* Plomo suave / Blanco */
+    border: 1px solid #cbd5e1 !important;
     border-radius: 12px !important;
     padding: 18px !important;
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Forzar que TODO el texto DENTRO de las tarjetas sea oscuro y legible */
+/* TEXTO DENTRO DE LAS TARJETAS (Para que no se confunda con el blanco) */
 div[data-testid="stVerticalBlockBorderWrapper"] p,
 div[data-testid="stVerticalBlockBorderWrapper"] label,
 div[data-testid="stVerticalBlockBorderWrapper"] span,
-div[data-testid="stVerticalBlockBorderWrapper"] div,
 div[data-testid="stVerticalBlockBorderWrapper"] td,
 div[data-testid="stVerticalBlockBorderWrapper"] th {
-    color: #1e293b !important; /* Azul plomo oscuro sobre fondo blanco */
+    color: #1e293b !important; /* Azul plomo oscuro legible sobre blanco */
 }
 
-/* Títulos dentro de tarjetas en Azul Claro/Medio */
 div[data-testid="stVerticalBlockBorderWrapper"] h1,
 div[data-testid="stVerticalBlockBorderWrapper"] h2,
 div[data-testid="stVerticalBlockBorderWrapper"] h3,
@@ -46,40 +59,36 @@ div[data-testid="stVerticalBlockBorderWrapper"] h4 {
     color: #0284c7 !important;
 }
 
-/* Métricas numéricas dentro de tarjetas */
 div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stMetricValue"] div {
-    color: #0369a1 !important; /* Azul corporativo nítido */
-    font-weight: 700 !important;
+    color: #0369a1 !important;
 }
 
 /* =========================================================
-   3. CORRECCIÓN DE CAJAS DE ALERTA (st.info, st.warning)
+   4. CAJAS DE ALERTA (st.info / st.warning)
    ========================================================= */
 div[data-testid="stAlert"] {
-    background-color: #e0f2fe !important; /* Fondo celeste claro */
+    background-color: #e0f2fe !important;
     border: 1px solid #38bdf8 !important;
-    border-radius: 8px !important;
 }
 
 div[data-testid="stAlert"] p,
 div[data-testid="stAlert"] div {
-    color: #0369a1 !important; /* Texto azul oscuro visible */
+    color: #0369a1 !important;
     font-weight: 600 !important;
 }
 
 /* =========================================================
-   4. PESTAÑAS (TABS ESTILO @RISK)
+   5. PESTAÑAS (TABS ESTILO @RISK)
    ========================================================= */
-button[data-baseweb="tab"] {
+button[data-baseweb="tab"] p {
     color: #94a3b8 !important;
     font-weight: 600 !important;
 }
 
-button[data-baseweb="tab"][aria-selected="true"] {
-    color: #38bdf8 !important; /* Azul Claro activo */
-    border-bottom-color: #38bdf8 !important;
-}
-
 button[data-baseweb="tab"][aria-selected="true"] p {
     color: #38bdf8 !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    border-bottom-color: #38bdf8 !important;
 }
