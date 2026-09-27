@@ -220,20 +220,25 @@ with st.container(border=True, key="panel-analisis"):
             
         # Subtítulo para la sección de resultados
         # Subtítulo para la sección de resultados
+        # Subtítulo para la sección de resultados
         st.subheader('Resultados de la Simulación')
         
         tabAnalisis, tabSensibilidad, tabDatos = st.tabs(["📊 Histograma y Frecuencia", "🌪️ Sensibilidad (Tornado)", "📋 Datos de Simulaciones"])
 
         with tabAnalisis:
-            if parVariableResultado in dfResultado.columns:
+            if parVariableResultado in dfResultado.columns and not dfResultado.empty:
                 c1, c2 = st.columns([7, 3])
                 with c1:
                     rangoPercentiles = [2.5, 5, 25, 50, 75, 95, 97.5]
-                    percentiles = np.percentile(dfResultado[parVariableResultado], rangoPercentiles)
+                    percentiles = np.percentile(dfResultado[parVariableResultado].dropna(), rangoPercentiles)
                     dfPercentiles = pd.DataFrame({"Percentil": [f"{i} %" for i in rangoPercentiles], "Valor": percentiles})
                     
                     min_val = float(dfResultado[parVariableResultado].min())
                     max_val = float(dfResultado[parVariableResultado].max())
+                    
+                    # Evitar error si min_val == max_val
+                    if min_val == max_val:
+                        max_val += 0.01
                     
                     parMontoProbabilidad = st.slider('Rango de Delimitadores (Cutoffs)', 
                                                      min_val, max_val,
@@ -241,7 +246,7 @@ with st.container(border=True, key="panel-analisis"):
                     
                     dfRango = dfResultado[(dfResultado[parVariableResultado] >= parMontoProbabilidad[0]) & 
                                           (dfResultado[parVariableResultado] <= parMontoProbabilidad[1])]
-                    probabilidadMonto = len(dfRango) / parNumSimulaciones
+                    probabilidadMonto = len(dfRango) / parNumSimulaciones if parNumSimulaciones > 0 else 0
                     
                     m_cols = st.columns(3)
                     m_cols[0].metric(label="Probabilidad (Likelihood)", value=f"{probabilidadMonto:,.2%}")
@@ -254,17 +259,19 @@ with st.container(border=True, key="panel-analisis"):
                     df_fuera = dfResultado[(dfResultado[parVariableResultado] < parMontoProbabilidad[0]) | 
                                           (dfResultado[parVariableResultado] > parMontoProbabilidad[1])]
                     
-                    # Barras de fuera de rango
+                    # Barras fuera de rango (Verde claro suave)
                     fig_hist.add_trace(go.Histogram(
                         x=df_fuera[parVariableResultado],
                         marker=dict(color='#A3E4D7', line=dict(color='#ffffff', width=0.5)),
+                        name='Fuera de rango',
                         showlegend=False
                     ))
 
-                    # Barras dentro de rango
+                    # Barras dentro de rango (Verde Esmeralda @RISK)
                     fig_hist.add_trace(go.Histogram(
                         x=dfRango[parVariableResultado],
                         marker=dict(color='#2ECC71', line=dict(color='#ffffff', width=0.5)),
+                        name='Dentro de rango',
                         showlegend=False
                     ))
 
@@ -275,11 +282,11 @@ with st.container(border=True, key="panel-analisis"):
                     fig_hist.update_layout(
                         title=f"<b>Resultados de Simulación: {parVariableResultado}</b>",
                         barmode='overlay',
-                        plot_bgcolor='white',
-                        paper_bgcolor='white',
-                        xaxis=dict(title=f"Valores de {parVariableResultado}", gridcolor='#E2E8F0'),
-                        yaxis=dict(title="Frecuencia", gridcolor='#E2E8F0'),
-                        font=dict(color='#0F172A')
+                        plot_bgcolor='#ffffff',
+                        paper_bgcolor='#ffffff',
+                        xaxis=dict(title=f"Valores de {parVariableResultado}", gridcolor='#e2e8f0'),
+                        yaxis=dict(title="Frecuencia", gridcolor='#e2e8f0'),
+                        font=dict(color='#1e293b')
                     )
                     
                     st.plotly_chart(fig_hist, use_container_width=True, key="chart-histograma-risk")
@@ -293,12 +300,15 @@ with st.container(border=True, key="panel-analisis"):
 
         with tabSensibilidad:
             st.markdown("#### Análisis de Sensibilidad (Tornado)")
-            df_corr = sens.calcular_sensibilidad(dfResultado, parVariableResultado)
-            if not df_corr.empty:
-                fig_tornado = sens.generar_grafico_tornado(df_corr)
-                st.plotly_chart(fig_tornado, use_container_width=True)
+            if 'sens' in globals() or 'sens' in locals():
+                df_corr = sens.calcular_sensibilidad(dfResultado, parVariableResultado)
+                if not df_corr.empty:
+                    fig_tornado = sens.generar_grafico_tornado(df_corr)
+                    st.plotly_chart(fig_tornado, use_container_width=True)
+                else:
+                    st.info("Asegúrate de tener variables aleatorias configuradas para calcular la sensibilidad.")
             else:
-                st.info("Asegúrate de tener variables aleatorias configuradas para calcular la sensibilidad.")
+                st.warning("El módulo de sensibilidad no está cargado correctamente. Verifica 'import sensibilidad as sens'.")
 
         with tabDatos:
             st.dataframe(dfResultado, use_container_width=True)
