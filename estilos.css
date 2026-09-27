@@ -1,5 +1,5 @@
 /* =========================================================
-   1. FONDO GENERAL Y TEXTOS GLOBALES
+   1. FONDO GENERAL Y TITULO PRINCIPAL
    ========================================================= */
 .stApp {
     background-color: #0b132b !important;
@@ -10,46 +10,41 @@ header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
+/* Mantener el título principal H1 grande y prominente */
+.stApp h1 {
+    font-size: 2.25rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+}
+
 /* =========================================================
-   2. CAJAS DE AYUDA / GUÍA EN AZUL MÁS CLARO (LADO DERECHO)
+   2. CAJAS Y BLOQUES INFORMATIVOS
    ========================================================= */
-/* Aclara los contenedores y bloques informativos azules */
-div[data-testid="stMarkdownContainer"] div[style*="background"],
-.stAlert,
-div[data-testid="stExpander"] {
-    background-color: #1e293b !important; /* Azul pizarra mediano/claro */
+.stAlert, div[data-testid="stExpander"] {
+    background-color: #1e293b !important;
     border: 1px solid #334155 !important;
     border-radius: 8px !important;
 }
 
-/* Forzar que las letras dentro de bloques informativos sean totalmente claras y visibles */
-div[data-testid="stMarkdownContainer"] p,
-div[data-testid="stMarkdownContainer"] li,
-div[data-testid="stMarkdownContainer"] span,
-label[data-testid="stWidgetLabel"] p {
-    color: #f1f5f9 !important; /* Blanco suave visible sobre fondo oscuro general */
-    font-size: 14px !important;
-}
-
 /* =========================================================
-   3. CAJAS DE ENTRADA Y NÚMEROS (PARAMETROS)
+   3. CAJAS DE ENTRADA (NUMEROS / TEXTO) Y SELECCION
    ========================================================= */
 div[data-baseweb="input"],
 div[data-baseweb="select"],
 div[data-testid="stTextInput"] input,
 div[data-testid="stNumberInput"] input {
-    background-color: #ffffff !important; /* Fondo blanco puro para contraste total */
-    color: #0f172a !important; /* Texto oscuro/negro */
+    background-color: #ffffff !important;
+    color: #0f172a !important;
     border-radius: 6px !important;
     border: 1px solid #94a3b8 !important;
     font-weight: 600 !important;
 }
 
 /* =========================================================
-   4. PANEL DE RESULTADOS (CONTENEDOR UNIFICADO)
+   4. PANEL Y CONTENEDOR DE RESULTADOS
    ========================================================= */
 div.window-risk {
-    background-color: #f8fafc !important; /* Fondo claro tipo ventana */
+    background-color: #f8fafc !important;
     border: 2px solid #cbd5e1 !important;
     border-radius: 12px !important;
     padding: 20px !important;
@@ -57,7 +52,6 @@ div.window-risk {
     margin-top: 15px !important;
 }
 
-/* Forzar letras oscuras en la ventana de resultados */
 div.window-risk,
 div.window-risk *,
 div.window-risk p,
@@ -70,9 +64,8 @@ div.window-risk h4 {
     color: #0f172a !important;
 }
 
-/* Cajas de métricas dentro del panel de resultados */
 div.window-risk div[data-testid="stMetric"] {
-    background-color: #e0f2fe !important; /* Azul celeste muy suave */
+    background-color: #e0f2fe !important;
     border: 1px solid #bae6fd !important;
     border-radius: 8px !important;
     padding: 10px !important;
