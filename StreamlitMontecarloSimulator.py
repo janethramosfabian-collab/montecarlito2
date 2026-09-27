@@ -3,6 +3,7 @@ import streamlit as st  # Para crear la interfaz web
 import pandas as pd  # Para manipular datos en formato tabular
 import numpy as np  # Para realizar cálculos numéricos
 import plotly.express as px  # Para crear gráficos interactivos
+import plotly.graph_objects as go
 import montecarlo as mc # Para las funciones de la simulación
 from code_editor import code_editor # Para editar el código en la app
 import utils as ut  # Para funciones de utilidad personalizadas
@@ -219,8 +220,6 @@ with st.container(border=True, key="panel-analisis"):
             dfResultado = st.session_state.resultado
             
         # Subtítulo para la sección de resultados
-        # Subtítulo para la sección de resultados
-        # Subtítulo para la sección de resultados
         st.subheader('Resultados de la Simulación')
         
         tabAnalisis, tabSensibilidad, tabDatos = st.tabs(["📊 Histograma y Frecuencia", "🌪️ Sensibilidad (Tornado)", "📋 Datos de Simulaciones"])
@@ -235,8 +234,6 @@ with st.container(border=True, key="panel-analisis"):
                     
                     min_val = float(dfResultado[parVariableResultado].min())
                     max_val = float(dfResultado[parVariableResultado].max())
-                    
-                    # Evitar error si min_val == max_val
                     if min_val == max_val:
                         max_val += 0.01
                     
@@ -259,11 +256,10 @@ with st.container(border=True, key="panel-analisis"):
                     df_fuera = dfResultado[(dfResultado[parVariableResultado] < parMontoProbabilidad[0]) | 
                                           (dfResultado[parVariableResultado] > parMontoProbabilidad[1])]
                     
-                    # Barras fuera de rango (Verde claro suave)
+                    # Barras fuera de rango (Verde claro)
                     fig_hist.add_trace(go.Histogram(
                         x=df_fuera[parVariableResultado],
                         marker=dict(color='#A3E4D7', line=dict(color='#ffffff', width=0.5)),
-                        name='Fuera de rango',
                         showlegend=False
                     ))
 
@@ -271,7 +267,6 @@ with st.container(border=True, key="panel-analisis"):
                     fig_hist.add_trace(go.Histogram(
                         x=dfRango[parVariableResultado],
                         marker=dict(color='#2ECC71', line=dict(color='#ffffff', width=0.5)),
-                        name='Dentro de rango',
                         showlegend=False
                     ))
 
@@ -300,15 +295,12 @@ with st.container(border=True, key="panel-analisis"):
 
         with tabSensibilidad:
             st.markdown("#### Análisis de Sensibilidad (Tornado)")
-            if 'sens' in globals() or 'sens' in locals():
-                df_corr = sens.calcular_sensibilidad(dfResultado, parVariableResultado)
-                if not df_corr.empty:
-                    fig_tornado = sens.generar_grafico_tornado(df_corr)
-                    st.plotly_chart(fig_tornado, use_container_width=True)
-                else:
-                    st.info("Asegúrate de tener variables aleatorias configuradas para calcular la sensibilidad.")
+            df_corr = sens.calcular_sensibilidad(dfResultado, parVariableResultado)
+            if not df_corr.empty:
+                fig_tornado = sens.generar_grafico_tornado(df_corr)
+                st.plotly_chart(fig_tornado, use_container_width=True)
             else:
-                st.warning("El módulo de sensibilidad no está cargado correctamente. Verifica 'import sensibilidad as sens'.")
+                st.info("Asegúrate de tener variables aleatorias configuradas para calcular la sensibilidad.")
 
         with tabDatos:
             st.dataframe(dfResultado, use_container_width=True)
