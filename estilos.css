@@ -1,8 +1,8 @@
 /* =========================================================
-   1. FONDO GLOBAL AZULINO NOCTURNO
+   1. FONDO GENERAL AZULINO NOCTURNO
    ========================================================= */
 .stApp {
-    background-color: #0b1329 !important;
+    background-color: #0b132b !important; /* Azulino profundo */
     color: #38bdf8 !important;
 }
 
@@ -10,85 +10,82 @@ header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
+/* Textos fuera del contenedor principal */
+.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp label, .stMarkdown {
+    color: #38bdf8 !important; /* Celeste / Azul claro brillante */
+}
+
 /* =========================================================
-   2. TEXTOS LIBRES (FORZADOS A AZUL CLARO / CELESTE)
+   2. CONTENEDOR TIPO VENTANA @RISK (UN SOLO CUADRO UNIFICADO)
    ========================================================= */
-/* Títulos, párrafos, subtítulos, etiquetas y markdown */
-.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
-.stApp p, .stApp span, .stApp label, .stMarkdown {
-    color: #38bdf8 !important; /* Azul Claro / Celeste Neón */
+div.panel-risk {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 10px !important;
 }
 
-/* Etiquetas de Sliders y Métricas fuera de cajas */
-label[data-testid="stWidgetLabel"] p,
-label[data-testid="stMetricLabel"] p {
-    color: #7dd3fc !important;
-    font-weight: 600 !important;
+/* Estilos de texto DENTRO de la ventana unificada */
+div.panel-risk p,
+div.panel-risk label,
+div.panel-risk span,
+div.panel-risk div,
+div.panel-risk td,
+div.panel-risk th {
+    color: #1e293b !important; /* Gris plomo oscuro nítido */
 }
 
-/* Valores de métricas principales fuera de cajas */
-div[data-testid="stMetricValue"] div {
-    color: #38bdf8 !important;
+div.panel-risk h1,
+div.panel-risk h2,
+div.panel-risk h3,
+div.panel-risk h4 {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* Remover fondos individuales de métricas internas */
+div.panel-risk div[data-testid="stMetric"] {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+}
+
+div.panel-risk div[data-testid="stMetricValue"] div {
+    color: #0284c7 !important; /* Azul corporativo */
     font-weight: 700 !important;
 }
 
 /* =========================================================
-   3. TARJETAS EN BLANCO / PLOMO SUAVE CON TEXTO OSCURO DENTRO
+   3. PESTAÑAS DENTRO DE LA VENTANA @RISK
    ========================================================= */
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background-color: #f8fafc !important; /* Plomo suave / Blanco */
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 12px !important;
-    padding: 18px !important;
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.4) !important;
+button[data-baseweb="tab"] p {
+    color: #64748b !important;
+    font-weight: 600 !important;
 }
 
-/* TEXTO DENTRO DE LAS TARJETAS (Para que no se confunda con el blanco) */
-div[data-testid="stVerticalBlockBorderWrapper"] p,
-div[data-testid="stVerticalBlockBorderWrapper"] label,
-div[data-testid="stVerticalBlockBorderWrapper"] span,
-div[data-testid="stVerticalBlockBorderWrapper"] td,
-div[data-testid="stVerticalBlockBorderWrapper"] th {
-    color: #1e293b !important; /* Azul plomo oscuro legible sobre blanco */
-}
-
-div[data-testid="stVerticalBlockBorderWrapper"] h1,
-div[data-testid="stVerticalBlockBorderWrapper"] h2,
-div[data-testid="stVerticalBlockBorderWrapper"] h3,
-div[data-testid="stVerticalBlockBorderWrapper"] h4 {
+button[data-baseweb="tab"][aria-selected="true"] p {
     color: #0284c7 !important;
+    font-weight: 700 !important;
 }
 
-div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stMetricValue"] div {
-    color: #0369a1 !important;
+button[data-baseweb="tab"][aria-selected="true"] {
+    border-bottom-color: #0284c7 !important;
 }
 
 /* =========================================================
-   4. CAJAS DE ALERTA (st.info / st.warning)
+   4. ALERTA Y MENSAJES (st.info)
    ========================================================= */
 div[data-testid="stAlert"] {
     background-color: #e0f2fe !important;
     border: 1px solid #38bdf8 !important;
+    border-radius: 8px !important;
 }
 
 div[data-testid="stAlert"] p,
 div[data-testid="stAlert"] div {
     color: #0369a1 !important;
     font-weight: 600 !important;
-}
-
-/* =========================================================
-   5. PESTAÑAS (TABS ESTILO @RISK)
-   ========================================================= */
-button[data-baseweb="tab"] p {
-    color: #94a3b8 !important;
-    font-weight: 600 !important;
-}
-
-button[data-baseweb="tab"][aria-selected="true"] p {
-    color: #38bdf8 !important;
-}
-
-button[data-baseweb="tab"][aria-selected="true"] {
-    border-bottom-color: #38bdf8 !important;
 }
