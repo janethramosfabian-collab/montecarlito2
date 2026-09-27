@@ -2,7 +2,7 @@
    1. FONDO GENERAL Y TEXTOS GLOBALES
    ========================================================= */
 .stApp {
-    background-color: #0f172a !important;
+    background-color: #0b132b !important;
     color: #f8fafc !important;
 }
 
@@ -11,46 +11,45 @@ header[data-testid="stHeader"] {
 }
 
 /* =========================================================
-   2. CAJAS DE TEXTO, METRICAS Y INPUTS EN AZUL MÁS CLARO
+   2. CAJAS DE AYUDA / GUÍA EN AZUL MÁS CLARO (LADO DERECHO)
    ========================================================= */
-/* Cajas de métricas (Simulaciones, Media, Probabilidad, etc.) */
-div[data-testid="stMetric"] {
-    background-color: #dbeafe !important; /* Azul celeste muy claro */
-    border: 1px solid #93c5fd !important;
+/* Aclara los contenedores y bloques informativos azules */
+div[data-testid="stMarkdownContainer"] div[style*="background"],
+.stAlert,
+div[data-testid="stExpander"] {
+    background-color: #1e293b !important; /* Azul pizarra mediano/claro */
+    border: 1px solid #334155 !important;
     border-radius: 8px !important;
-    padding: 10px !important;
 }
 
-div[data-testid="stMetric"] label,
-div[data-testid="stMetric"] div,
-div[data-testid="stMetricValue"] div {
-    color: #1e3a8a !important; /* Texto azul marino oscuro de alto contraste */
-    font-weight: 700 !important;
-}
-
-/* Campos de entrada, selectores y cajas de texto */
-div[data-baseweb="input"],
-div[data-baseweb="select"],
-div[data-testid="stTextInput"] input,
-div[data-testid="stNumberInput"] input {
-    background-color: #eff6ff !important; /* Celeste claro */
-    color: #0f172a !important; /* Texto oscuro visible */
-    border-radius: 8px !important;
-    border: 1px solid #93c5fd !important;
-}
-
-/* Etiquetas y descripciones encima de las cajas */
+/* Forzar que las letras dentro de bloques informativos sean totalmente claras y visibles */
 div[data-testid="stMarkdownContainer"] p,
+div[data-testid="stMarkdownContainer"] li,
+div[data-testid="stMarkdownContainer"] span,
 label[data-testid="stWidgetLabel"] p {
-    color: #e2e8f0 !important; /* Texto claro sobre el fondo oscuro general */
+    color: #f1f5f9 !important; /* Blanco suave visible sobre fondo oscuro general */
     font-size: 14px !important;
 }
 
 /* =========================================================
-   3. PANEL UNIFICADO DE RESULTADOS (CUADRO CLARO CON BORDES)
+   3. CAJAS DE ENTRADA Y NÚMEROS (PARAMETROS)
+   ========================================================= */
+div[data-baseweb="input"],
+div[data-baseweb="select"],
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input {
+    background-color: #ffffff !important; /* Fondo blanco puro para contraste total */
+    color: #0f172a !important; /* Texto oscuro/negro */
+    border-radius: 6px !important;
+    border: 1px solid #94a3b8 !important;
+    font-weight: 600 !important;
+}
+
+/* =========================================================
+   4. PANEL DE RESULTADOS (CONTENEDOR UNIFICADO)
    ========================================================= */
 div.window-risk {
-    background-color: #f8fafc !important; /* Fondo blanco/gris claro para todo el contenedor de resultados */
+    background-color: #f8fafc !important; /* Fondo claro tipo ventana */
     border: 2px solid #cbd5e1 !important;
     border-radius: 12px !important;
     padding: 20px !important;
@@ -58,7 +57,7 @@ div.window-risk {
     margin-top: 15px !important;
 }
 
-/* Forzar que TODO dentro del panel de resultados sea oscuro y visible */
+/* Forzar letras oscuras en la ventana de resultados */
 div.window-risk,
 div.window-risk *,
 div.window-risk p,
@@ -67,25 +66,19 @@ div.window-risk span,
 div.window-risk h1,
 div.window-risk h2,
 div.window-risk h3,
-div.window-risk h4,
-div.window-risk [data-testid="stMarkdownContainer"] p {
+div.window-risk h4 {
     color: #0f172a !important;
 }
 
-/* Tablas y Pestañas dentro del panel */
-div.window-risk div[data-testid="stDataFrame"] {
-    border: 1px solid #cbd5e1 !important;
+/* Cajas de métricas dentro del panel de resultados */
+div.window-risk div[data-testid="stMetric"] {
+    background-color: #e0f2fe !important; /* Azul celeste muy suave */
+    border: 1px solid #bae6fd !important;
     border-radius: 8px !important;
-    background-color: #ffffff !important;
+    padding: 10px !important;
 }
 
-div.window-risk button[data-baseweb="tab"] {
-    background-color: #e2e8f0 !important;
-    border-radius: 8px 8px 0 0 !important;
-    border: 1px solid #cbd5e1 !important;
-}
-
-div.window-risk button[data-baseweb="tab"][aria-selected="true"] {
-    background-color: #ffffff !important;
-    border-top: 3px solid #0284c7 !important;
+div.window-risk div[data-testid="stMetricValue"] div {
+    color: #0369a1 !important;
+    font-weight: 700 !important;
 }
