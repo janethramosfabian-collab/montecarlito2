@@ -31,21 +31,33 @@ div[data-testid="stMetricValue"] {
     font-weight: bold;
     color: #105cc6 !important;
 }
-
-/* Bordes finos y limpios en las tarjetas */
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    border: 1px solid #dcdfe4 !important;
-    border-radius: 8px !important;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.04);
+/* Fondo general con degradado plomo a azul oscuro */
+.stApp {
+    background: linear-gradient(135deg, #2c3e50 0%, #0f2027 50%, #203a43 100%) !important;
+    color: #ecf0f1;
 }
 
-/* Pestañas estilo software ejecutivo */
+/* Tarjetas y contenedor de contenido en blanco */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #ffffff !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2) !important;
+    color: #2c3e50 !important;
+}
+
+/* Tipografía dentro de las tarjetas */
+div[data-testid="stVerticalBlockBorderWrapper"] * {
+    color: #2c3e50 !important;
+}
+
+/* Pestañas */
 button[data-baseweb="tab"] {
-    font-weight: 600;
-    color: #4a5568;
+    color: #bdc3c7 !important;
+    font-weight: bold !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
-    color: #105cc6 !important;
-    border-bottom-color: #105cc6 !important;
+    color: #2ecc71 !important;
+    border-bottom-color: #2ecc71 !important;
 }
