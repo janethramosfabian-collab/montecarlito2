@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 
 def generarVariables(formula):    
-    # 1. Extrae los nombres de las variables en formato {{variable}}
+    # Extrae las variables entre llaves {{variable}}
     listaVariables = re.findall(r"({{[A-Za-z0-9_]+}})", formula)
     formulaSimulacion = formula
     listaNombreVariables = []
@@ -12,17 +12,15 @@ def generarVariables(formula):
         nombrevar = var.replace("{{", "").replace("}}", "")
         if nombrevar not in listaNombreVariables:
             listaNombreVariables.append(nombrevar)
-        # Sustituye la sintaxis de la variable por la referencia al diccionario 'variables'
         formulaSimulacion = formulaSimulacion.replace(var, f"variables['{nombrevar}']")
     
-    # 2. Traducción de sintaxis Excel a NumPy para soporte de condicionales como IF
-    # Traduce 'IF(' o 'if(' a 'np.where('
+    # 1. Traduce la función IF de Excel a np.where de NumPy
     formulaSimulacion = re.sub(r'\bIF\s*\(', 'np.where(', formulaSimulacion, flags=re.IGNORECASE)
     
-    # Reemplaza punto y coma ';' por comas ','
+    # 2. Cambia punto y coma ';' por comas ','
     formulaSimulacion = formulaSimulacion.replace(';', ',')
     
-    # Convierte operadores de igualdad de Excel (=) a Python (==), ignorando <=, >=, != o ==
+    # 3. Convierte el operador '=' de Excel a '==' de Python
     formulaSimulacion = re.sub(r'(?<![><!=])=(?![=])', '==', formulaSimulacion)
 
     return formulaSimulacion, listaNombreVariables
