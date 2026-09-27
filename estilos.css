@@ -1,8 +1,8 @@
 /* =========================================================
-   1. FONDO GENERAL DE LA APLICACIÓN
+   1. FONDO GENERAL Y TEXTOS GLOBALES
    ========================================================= */
 .stApp {
-    background-color: #0b132b !important;
+    background-color: #0f172a !important;
     color: #f8fafc !important;
 }
 
@@ -11,18 +11,54 @@ header[data-testid="stHeader"] {
 }
 
 /* =========================================================
-   2. TARJETA UNIFICADA TIPO @RISK (UN SOLO CUADRO BLANCO/GRIS)
+   2. CAJAS DE TEXTO, METRICAS Y INPUTS EN AZUL MÁS CLARO
+   ========================================================= */
+/* Cajas de métricas (Simulaciones, Media, Probabilidad, etc.) */
+div[data-testid="stMetric"] {
+    background-color: #dbeafe !important; /* Azul celeste muy claro */
+    border: 1px solid #93c5fd !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+}
+
+div[data-testid="stMetric"] label,
+div[data-testid="stMetric"] div,
+div[data-testid="stMetricValue"] div {
+    color: #1e3a8a !important; /* Texto azul marino oscuro de alto contraste */
+    font-weight: 700 !important;
+}
+
+/* Campos de entrada, selectores y cajas de texto */
+div[data-baseweb="input"],
+div[data-baseweb="select"],
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input {
+    background-color: #eff6ff !important; /* Celeste claro */
+    color: #0f172a !important; /* Texto oscuro visible */
+    border-radius: 8px !important;
+    border: 1px solid #93c5fd !important;
+}
+
+/* Etiquetas y descripciones encima de las cajas */
+div[data-testid="stMarkdownContainer"] p,
+label[data-testid="stWidgetLabel"] p {
+    color: #e2e8f0 !important; /* Texto claro sobre el fondo oscuro general */
+    font-size: 14px !important;
+}
+
+/* =========================================================
+   3. PANEL UNIFICADO DE RESULTADOS (CUADRO CLARO CON BORDES)
    ========================================================= */
 div.window-risk {
-    background-color: #f8fafc !important; /* Fondo claro para toda la sección */
+    background-color: #f8fafc !important; /* Fondo blanco/gris claro para todo el contenedor de resultados */
     border: 2px solid #cbd5e1 !important;
     border-radius: 12px !important;
     padding: 20px !important;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4) !important;
     margin-top: 15px !important;
 }
 
-/* Forzar contraste total para que NINGÚN texto dentro del cuadro claro se pierda */
+/* Forzar que TODO dentro del panel de resultados sea oscuro y visible */
 div.window-risk,
 div.window-risk *,
 div.window-risk p,
@@ -33,66 +69,23 @@ div.window-risk h2,
 div.window-risk h3,
 div.window-risk h4,
 div.window-risk [data-testid="stMarkdownContainer"] p {
-    color: #0f172a !important; /* Texto oscuro visible */
+    color: #0f172a !important;
 }
 
-/* Eliminar fondos oscuros internos de columnas de Streamlit */
-div.window-risk div[data-testid="stVerticalBlockBorderWrapper"],
-div.window-risk div[data-testid="stColumn"],
-div.window-risk div[data-testid="stColumn"] > div,
-div.window-risk div[data-testid="element-container"] {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+/* Tablas y Pestañas dentro del panel */
+div.window-risk div[data-testid="stDataFrame"] {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    background-color: #ffffff !important;
 }
 
-/* =========================================================
-   3. PESTAÑAS (TABS) DENTRO DEL CONTENEDOR
-   ========================================================= */
 div.window-risk button[data-baseweb="tab"] {
     background-color: #e2e8f0 !important;
-    border: 1px solid #cbd5e1 !important;
-    border-bottom: none !important;
     border-radius: 8px 8px 0 0 !important;
-    padding: 8px 16px !important;
-    margin-right: 4px !important;
-}
-
-div.window-risk button[data-baseweb="tab"] p {
-    color: #334155 !important;
-    font-weight: 600 !important;
+    border: 1px solid #cbd5e1 !important;
 }
 
 div.window-risk button[data-baseweb="tab"][aria-selected="true"] {
     background-color: #ffffff !important;
     border-top: 3px solid #0284c7 !important;
-}
-
-div.window-risk button[data-baseweb="tab"][aria-selected="true"] p {
-    color: #0284c7 !important;
-    font-weight: 700 !important;
-}
-
-/* =========================================================
-   4. TARJETAS AZULES MÁS CLARAS Y TABLA DE PERCENTILES
-   ========================================================= */
-/* Métricas superiores y estadísticas en azul ligeramente más claro con bordes redondeados */
-div.window-risk div[data-testid="stMetric"] {
-    background-color: #e0f2fe !important; /* Azul claro suave */
-    border: 1px solid #bae6fd !important;
-    border-radius: 8px !important;
-    padding: 10px !important;
-}
-
-div.window-risk div[data-testid="stMetricValue"] div {
-    color: #0369a1 !important; /* Azul oscuro para los números */
-    font-weight: 700 !important;
-}
-
-/* Tabla de percentiles con fondo blanco y bordes redondeados */
-div.window-risk div[data-testid="stDataFrame"] {
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 8px !important;
-    background-color: #ffffff !important;
-    overflow: hidden !important;
 }
