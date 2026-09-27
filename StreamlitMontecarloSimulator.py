@@ -9,63 +9,7 @@ import utils as ut  # Para funciones de utilidad personalizadas
 
 # Configura la página de Streamlit
 st.set_page_config(page_title="Simulador de Montecarlo", page_icon="📊", layout="wide")
-# CSS personalizado para la estética corporativa
-st.markdown("""
-<style>
-    /* Fondo principal y contenedor */
-    .stApp {
-        background-color: #0D1117;
-        color: #C9D1D9;
-    }
-    
-    /* Encabezados y títulos */
-    h1, h2, h3 {
-        color: #F0F6FC !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    /* Contenedores de métricas / tarjetas */
-    div[data-testid="stMetric"] {
-        background-color: #161B22;
-        border: 1px solid #30363D;
-        padding: 12px;
-        border-radius: 6px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Botón principal estilo software analítico */
-    .stButton>button {
-        background-color: #1F6FEB;
-        color: #FFFFFF;
-        border: 1px solid #388BFD;
-        border-radius: 4px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-    }
-    .stButton>button:hover {
-        background-color: #58A6FF;
-        color: #0D1117;
-    }
 
-    /* Estilo de las pestañas */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background-color: #161B22;
-        padding: 6px;
-        border-radius: 6px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        color: #8B949E;
-        background-color: transparent;
-        border-radius: 4px;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #21262D !important;
-        color: #58A6FF !important;
-        font-weight: bold;
-    }
-</style>
-""", unsafe_allow_html=True)
 # Aplica estilos CSS personalizados
 ut.local_css("estilos.css")
 
