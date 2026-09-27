@@ -184,15 +184,11 @@ with st.container(border=True, key="panel-analisis"):
                     
                     if dist == "Normal":
                         valores = np.random.normal(p1, p2, parNumSimulaciones)
-                    if dist == "Normal":
-                        valores = np.random.normal(p1, p2, parNumSimulaciones)
                     elif dist == "Uniforme":
                         if fila["Tipo Datos"] == "Entero":
                             valores = np.random.randint(int(p1), int(p2) + 1, size=parNumSimulaciones)
                         else:
                             valores = np.random.uniform(p1, p2, parNumSimulaciones)
-                    elif dist == "Binomial":
-                        valores = np.random.uniform(p1, p2, parNumSimulaciones)
                     elif dist == "Binomial":
                         valores = np.random.binomial(int(p1), p2, parNumSimulaciones)
                     elif dist == "Triangular":
@@ -211,7 +207,6 @@ with st.container(border=True, key="panel-analisis"):
                     variables[var_nombre] = valores.astype(float)
 
             # Evalúa la fórmula de simulación
-            # Evalúa la fórmula de simulación permitiendo el uso de funciones vectorizadas de NumPy
             variables[parVariableResultado] = eval(formulaSimulacion, {"np": np, "variables": variables})
             
             # Crea un DataFrame con los resultados
