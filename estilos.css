@@ -26,3 +26,26 @@ div[class*='st-key-chart']
     overflow:hidden;
     border-radius: 10px;        
 }
+/* Color del valor de las métricas en azul corporativo */
+div[data-testid="stMetricValue"] {
+    font-weight: bold;
+    color: #105cc6 !important;
+}
+
+/* Bordes finos y limpios en las tarjetas */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border: 1px solid #dcdfe4 !important;
+    border-radius: 8px !important;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.04);
+}
+
+/* Pestañas estilo software ejecutivo */
+button[data-baseweb="tab"] {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: #105cc6 !important;
+    border-bottom-color: #105cc6 !important;
+}
