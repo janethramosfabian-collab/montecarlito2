@@ -1,5 +1,5 @@
 /* =========================================================
-   1. FONDO GENERAL Y TEXTOS
+   1. FONDO GENERAL DE LA APP Y TEXTOS EXTERNOS
    ========================================================= */
 .stApp {
     background-color: #0b132b !important;
@@ -10,70 +10,88 @@ header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
-/* Ocultar contenedores flotantes negros/oscuros de Streamlit */
-div[data-testid="stVerticalBlockBorderWrapper"],
-div[data-testid="stColumn"] > div {
+/* =========================================================
+   2. VENTANA INTEGRADA ESTILO @RISK (UN SOLO MARCO BLANCO)
+   ========================================================= */
+/* Eliminar los bordes y cuadros oscuros por defecto que Streamlit asigna a columnas y contenedores */
+div.window-risk div[data-testid="stVerticalBlockBorderWrapper"],
+div.window-risk div[data-testid="stColumn"],
+div.window-risk div[data-testid="stColumn"] > div,
+div.window-risk div[data-testid="element-container"] {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* =========================================================
-   2. VENTANA UNIFICADA TIPO @RISK (UN SOLO MARCO BLANCO)
-   ========================================================= */
-.risk-window-container {
+/* Contenedor blanco unificado de la ventana */
+div.window-risk {
     background-color: #ffffff !important;
     border: 2px solid #94a3b8 !important;
-    border-radius: 12px !important;
-    padding: 20px !important;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4) !important;
-    margin-top: 15px !important;
+    border-radius: 10px !important;
+    padding: 16px !important;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 10px !important;
+}
+
+/* Forzar textos dentro del panel blanco a tonos oscuros de legibilidad */
+div.window-risk,
+div.window-risk *,
+div.window-risk p,
+div.window-risk label,
+div.window-risk span,
+div.window-risk h1,
+div.window-risk h2,
+div.window-risk h3,
+div.window-risk h4 {
     color: #0f172a !important;
 }
 
-/* Forzar color de texto dentro de la ventana de resultados */
-.risk-window-container *,
-.risk-window-container p,
-.risk-window-container span,
-.risk-window-container label,
-.risk-window-container div {
-    color: #0f172a !important;
-}
-
-/* Estilos de Pestañas superiores (Tabs) */
-button[data-baseweb="tab"] {
-    background-color: #f1f5f9 !important;
-    border-radius: 6px 6px 0 0 !important;
+/* =========================================================
+   3. PESTAÑAS TIPO PESTAÑAS DE WINDOWS / @RISK
+   ========================================================= */
+div.window-risk button[data-baseweb="tab"] {
+    background-color: #e2e8f0 !important;
     border: 1px solid #cbd5e1 !important;
     border-bottom: none !important;
+    border-radius: 6px 6px 0 0 !important;
+    padding: 6px 14px !important;
     margin-right: 4px !important;
-    padding: 6px 16px !important;
 }
 
-button[data-baseweb="tab"] p {
+div.window-risk button[data-baseweb="tab"] p {
     color: #334155 !important;
     font-weight: 600 !important;
+    font-size: 13px !important;
 }
 
-button[data-baseweb="tab"][aria-selected="true"] {
+div.window-risk button[data-baseweb="tab"][aria-selected="true"] {
     background-color: #ffffff !important;
     border-top: 3px solid #0284c7 !important;
 }
 
-button[data-baseweb="tab"][aria-selected="true"] p {
+div.window-risk button[data-baseweb="tab"][aria-selected="true"] p {
     color: #0284c7 !important;
     font-weight: 700 !important;
 }
 
-/* Tablas de estadísticas/percentiles dentro de la ventana */
-.risk-window-container div[data-testid="stDataFrame"] {
+/* =========================================================
+   4. TABLAS DE ESTADÍSTICAS Y PERCENTILES ESTILO @RISK
+   ========================================================= */
+div.window-risk div[data-testid="stDataFrame"] {
     border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    overflow: hidden !important;
+    border-radius: 4px !important;
+    background-color: #ffffff !important;
 }
 
-/* Ajustes de métricas dentro de la ventana */
-div[data-testid="stMetricValue"] div {
+/* Cajas de Métricas internas estilo celda */
+div.window-risk div[data-testid="stMetric"] {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+}
+
+div.window-risk div[data-testid="stMetricValue"] div {
     color: #0284c7 !important;
     font-weight: 700 !important;
 }
