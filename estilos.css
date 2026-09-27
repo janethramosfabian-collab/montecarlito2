@@ -3,7 +3,7 @@
    ========================================================= */
 .stApp {
     background-color: #0b132b !important;
-    color: #e2e8f0 !important;
+    color: #f8fafc !important;
 }
 
 header[data-testid="stHeader"] {
@@ -11,18 +11,18 @@ header[data-testid="stHeader"] {
 }
 
 /* =========================================================
-   2. MARCO CONTENEDOR PRINCIPAL TIPO @RISK (GRIS CLARO)
+   2. TARJETA UNIFICADA TIPO @RISK (UN SOLO CUADRO BLANCO/GRIS)
    ========================================================= */
 div.window-risk {
-    background-color: #f1f5f9 !important; /* Gris claro de ventana Windows/@RISK */
-    border: 2px solid #94a3b8 !important;
-    border-radius: 8px !important;
-    padding: 16px !important;
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4) !important;
+    background-color: #f8fafc !important; /* Fondo claro para toda la sección */
+    border: 2px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5) !important;
     margin-top: 15px !important;
 }
 
-/* Forzar que TODO lo que esté dentro del marco de resultados tenga letras oscuras legibles */
+/* Forzar contraste total para que NINGÚN texto dentro del cuadro claro se pierda */
 div.window-risk,
 div.window-risk *,
 div.window-risk p,
@@ -33,10 +33,10 @@ div.window-risk h2,
 div.window-risk h3,
 div.window-risk h4,
 div.window-risk [data-testid="stMarkdownContainer"] p {
-    color: #0f172a !important; /* Azul/Negro oscuro para contraste total */
+    color: #0f172a !important; /* Texto oscuro visible */
 }
 
-/* Anular contenedores oscuros transparentes de Streamlit dentro del marco */
+/* Eliminar fondos oscuros internos de columnas de Streamlit */
 div.window-risk div[data-testid="stVerticalBlockBorderWrapper"],
 div.window-risk div[data-testid="stColumn"],
 div.window-risk div[data-testid="stColumn"] > div,
@@ -47,13 +47,13 @@ div.window-risk div[data-testid="element-container"] {
 }
 
 /* =========================================================
-   3. PESTAÑAS (TABS) TIPO WINDOWS / @RISK
+   3. PESTAÑAS (TABS) DENTRO DEL CONTENEDOR
    ========================================================= */
 div.window-risk button[data-baseweb="tab"] {
     background-color: #e2e8f0 !important;
     border: 1px solid #cbd5e1 !important;
     border-bottom: none !important;
-    border-radius: 6px 6px 0 0 !important;
+    border-radius: 8px 8px 0 0 !important;
     padding: 8px 16px !important;
     margin-right: 4px !important;
 }
@@ -61,7 +61,6 @@ div.window-risk button[data-baseweb="tab"] {
 div.window-risk button[data-baseweb="tab"] p {
     color: #334155 !important;
     font-weight: 600 !important;
-    font-size: 13px !important;
 }
 
 div.window-risk button[data-baseweb="tab"][aria-selected="true"] {
@@ -75,22 +74,25 @@ div.window-risk button[data-baseweb="tab"][aria-selected="true"] p {
 }
 
 /* =========================================================
-   4. TARJETAS DE MÉTRICAS Y TABLAS DENTRO DEL PANEL
+   4. TARJETAS AZULES MÁS CLARAS Y TABLA DE PERCENTILES
    ========================================================= */
+/* Métricas superiores y estadísticas en azul ligeramente más claro con bordes redondeados */
 div.window-risk div[data-testid="stMetric"] {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    padding: 8px 12px !important;
+    background-color: #e0f2fe !important; /* Azul claro suave */
+    border: 1px solid #bae6fd !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
 }
 
 div.window-risk div[data-testid="stMetricValue"] div {
-    color: #0284c7 !important;
+    color: #0369a1 !important; /* Azul oscuro para los números */
     font-weight: 700 !important;
 }
 
+/* Tabla de percentiles con fondo blanco y bordes redondeados */
 div.window-risk div[data-testid="stDataFrame"] {
     border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
+    border-radius: 8px !important;
     background-color: #ffffff !important;
+    overflow: hidden !important;
 }
