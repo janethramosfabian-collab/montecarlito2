@@ -1,8 +1,8 @@
 /* =========================================================
-   1. FONDO GENERAL AZULINO NOCTURNO
+   1. FONDO GLOBAL Y TEXTOS EN CELESTE
    ========================================================= */
 .stApp {
-    background-color: #0b132b !important; /* Azulino profundo */
+    background-color: #0b132b !important;
     color: #38bdf8 !important;
 }
 
@@ -10,59 +10,67 @@ header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
-/* Textos fuera del contenedor principal */
+/* Todos los títulos y etiquetas fuera de tarjetas */
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp label, .stMarkdown {
-    color: #38bdf8 !important; /* Celeste / Azul claro brillante */
+    color: #38bdf8 !important;
 }
 
 /* =========================================================
-   2. CONTENEDOR TIPO VENTANA @RISK (UN SOLO CUADRO UNIFICADO)
+   2. VENTANA UNIFICADA TIPO @RISK (UN SOLO MARCO BLANCO)
    ========================================================= */
-div.panel-risk {
+/* Quitar los micro-cuadros negros por defecto de Streamlit */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Marco principal blanco contenedor */
+div.window-risk {
     background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
+    border: 2px solid #cbd5e1 !important;
     border-radius: 12px !important;
-    padding: 24px !important;
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.4) !important;
-    margin-top: 10px !important;
+    padding: 20px !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5) !important;
+    margin-top: 15px !important;
 }
 
-/* Estilos de texto DENTRO de la ventana unificada */
-div.panel-risk p,
-div.panel-risk label,
-div.panel-risk span,
-div.panel-risk div,
-div.panel-risk td,
-div.panel-risk th {
-    color: #1e293b !important; /* Gris plomo oscuro nítido */
+/* Textos dentro del marco blanco */
+div.window-risk p,
+div.window-risk label,
+div.window-risk span,
+div.window-risk td,
+div.window-risk th {
+    color: #1e293b !important;
 }
 
-div.panel-risk h1,
-div.panel-risk h2,
-div.panel-risk h3,
-div.panel-risk h4 {
+div.window-risk h1,
+div.window-risk h2,
+div.window-risk h3,
+div.window-risk h4 {
     color: #0f172a !important;
     font-weight: 700 !important;
 }
 
-/* Remover fondos individuales de métricas internas */
-div.panel-risk div[data-testid="stMetric"] {
-    background-color: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    padding: 10px !important;
+/* Estilo para las métricas internas dentro del panel */
+div.window-risk div[data-testid="stMetric"] {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
 }
 
-div.panel-risk div[data-testid="stMetricValue"] div {
-    color: #0284c7 !important; /* Azul corporativo */
+div.window-risk div[data-testid="stMetricValue"] div {
+    color: #0284c7 !important;
     font-weight: 700 !important;
 }
 
 /* =========================================================
-   3. PESTAÑAS DENTRO DE LA VENTANA @RISK
+   3. PESTAÑAS DENTRO DEL PANEL
    ========================================================= */
 button[data-baseweb="tab"] p {
-    color: #64748b !important;
+    color: #475569 !important;
     font-weight: 600 !important;
 }
 
@@ -72,20 +80,15 @@ button[data-baseweb="tab"][aria-selected="true"] p {
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
-    border-bottom-color: #0284c7 !important;
+    border-bottom: 3px solid #0284c7 !important;
 }
 
-/* =========================================================
-   4. ALERTA Y MENSAJES (st.info)
-   ========================================================= */
+/* Cajas de notificación */
 div[data-testid="stAlert"] {
     background-color: #e0f2fe !important;
     border: 1px solid #38bdf8 !important;
-    border-radius: 8px !important;
 }
 
-div[data-testid="stAlert"] p,
-div[data-testid="stAlert"] div {
+div[data-testid="stAlert"] p {
     color: #0369a1 !important;
-    font-weight: 600 !important;
 }
