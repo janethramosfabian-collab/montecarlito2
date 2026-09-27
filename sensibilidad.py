@@ -2,36 +2,32 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
-def calcular_sensibilidad(df, target_col):
+def calcular_sensibilidad(df_resultado, columna_objetivo):
     """
-    Calcula la correlación de Spearman entre las variables de entrada y la variable objetivo.
+    Calcula la correlación de Spearman para el análisis de tornado.
     """
-    if df.empty or target_col not in df.columns:
+    if df_resultado.empty or columna_objetivo not in df_resultado.columns:
         return pd.DataFrame()
-
-    # Seleccionar únicamente columnas numéricas descartando valores nulos
-    numeric_df = df.select_dtypes(include=[np.number]).dropna()
     
-    if target_col not in numeric_df.columns:
+    # 1. Seleccionar únicamente columnas numéricas que tengan variabilidad
+    df_num = df_resultado.select_dtypes(include=[np.number]).dropna()
+    
+    if df_num.shape[1] <= 1:
         return pd.DataFrame()
-
-    y = numeric_df[target_col]
     
-    # Excluir la variable de resultado de las variables independientes
-    feature_cols = [col for col in numeric_df.columns if col != target_col]
+    # 2. Filtrar columnas donde el valor sea constante (sin varianza)
+    df_num = df_num.loc[:, df_num.std() > 0]
     
-    if not feature_cols:
+    if columna_objetivo not in df_num.columns:
         return pd.DataFrame()
-
-    correlations = []
-    for col in feature_cols:
-        corr_val = numeric_df[col].corr(y, method='spearman')
-        if not np.isnan(corr_val):
-            correlations.append({"Variable": col, "Correlacion": corr_val})
-
-    df_corr = pd.DataFrame(correlations)
-    if not df_corr.empty:
-        df_corr = df_corr.sort_values(by="Correlacion", key=abs, ascending=True)
+    
+    # 3. Calcular la correlación de Spearman
+    correlaciones = df_num.corr(method='spearman')[columna_objetivo].drop(columna_objetivo)
+    
+    df_corr = pd.DataFrame({
+        'Variable': correlaciones.index,
+        'Correlacion': correlaciones.values
+    }).sort_values(by='Correlacion', key=abs, ascending=True)
     
     return df_corr
 
