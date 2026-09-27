@@ -187,6 +187,7 @@ if btnSimular or len(st.session_state.resultado) > 0:
     # --- RENDERIZADO DE RESULTADOS: PANEL UNIFICADO ESTILO @RISK ---
     st.subheader('Resultados de la Simulación')
 
+    # INICIO DEL CONTENEDOR UNIFICADO DE @RISK
     st.markdown('<div class="window-risk">', unsafe_allow_html=True)
 
     tabAnalisis, tabSensibilidad, tabDatos = st.tabs(["📊 Histograma y Frecuencia", "🌪️ Sensibilidad (Tornado)", "📋 Datos de Simulaciones"])
@@ -195,6 +196,7 @@ if btnSimular or len(st.session_state.resultado) > 0:
         if parVariableResultado in dfResultado.columns and not dfResultado.empty:
             vals = dfResultado[parVariableResultado].dropna()
             
+            # Sub-contenedor en 2 columnas estilo @RISK (Gráfico a la izq, Stats a la der)
             col_grafico, col_stats = st.columns([7, 3])
             
             with col_grafico:
@@ -220,27 +222,27 @@ if btnSimular or len(st.session_state.resultado) > 0:
                 m_cols[1].metric(label="Corte Inferior", value=f"{parMontoProbabilidad[0]:,.2f}")
                 m_cols[2].metric(label="Corte Superior", value=f"{parMontoProbabilidad[1]:,.2f}")
                 
-                # Histograma estilo @RISK (Plano blanco con barras verdes esmeralda)
+                # Histograma estilo @RISK
                 fig_hist = go.Figure()
                 
                 df_fuera = dfResultado[(dfResultado[parVariableResultado] < parMontoProbabilidad[0]) | 
                                       (dfResultado[parVariableResultado] > parMontoProbabilidad[1])]
                 
-                # Barras cola (Verde claro)
+                # Barras fuera de rango (Verde claro)
                 fig_hist.add_trace(go.Histogram(
                     x=df_fuera[parVariableResultado],
                     marker=dict(color='#A3E4D7', line=dict(color='#ffffff', width=0.5)),
                     showlegend=False
                 ))
 
-                # Barras centro (Verde Esmeralda)
+                # Barras dentro de rango (Verde Esmeralda)
                 fig_hist.add_trace(go.Histogram(
                     x=dfRango[parVariableResultado],
                     marker=dict(color='#2ECC71', line=dict(color='#ffffff', width=0.5)),
                     showlegend=False
                 ))
 
-                # Líneas delimitadoras rojas punteadas
+                # Líneas delimitadoras rojas
                 fig_hist.add_vline(x=parMontoProbabilidad[0], line_dash="dash", line_color="#E74C3C", line_width=2)
                 fig_hist.add_vline(x=parMontoProbabilidad[1], line_dash="dash", line_color="#E74C3C", line_width=2)
 
@@ -278,4 +280,5 @@ if btnSimular or len(st.session_state.resultado) > 0:
     with tabDatos:
         st.dataframe(dfResultado, use_container_width=True)
 
+    # FIN DEL CONTENEDOR UNIFICADO DE @RISK
     st.markdown('</div>', unsafe_allow_html=True)
