@@ -1,9 +1,9 @@
 /* =========================================================
-   1. FONDO GENERAL DE LA APP Y TEXTOS EXTERNOS
+   1. FONDO GENERAL DE LA APLICACIÓN
    ========================================================= */
 .stApp {
     background-color: #0b132b !important;
-    color: #38bdf8 !important;
+    color: #e2e8f0 !important;
 }
 
 header[data-testid="stHeader"] {
@@ -11,9 +11,32 @@ header[data-testid="stHeader"] {
 }
 
 /* =========================================================
-   2. VENTANA INTEGRADA ESTILO @RISK (UN SOLO MARCO BLANCO)
+   2. MARCO CONTENEDOR PRINCIPAL TIPO @RISK (GRIS CLARO)
    ========================================================= */
-/* Eliminar los bordes y cuadros oscuros por defecto que Streamlit asigna a columnas y contenedores */
+div.window-risk {
+    background-color: #f1f5f9 !important; /* Gris claro de ventana Windows/@RISK */
+    border: 2px solid #94a3b8 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 15px !important;
+}
+
+/* Forzar que TODO lo que esté dentro del marco de resultados tenga letras oscuras legibles */
+div.window-risk,
+div.window-risk *,
+div.window-risk p,
+div.window-risk label,
+div.window-risk span,
+div.window-risk h1,
+div.window-risk h2,
+div.window-risk h3,
+div.window-risk h4,
+div.window-risk [data-testid="stMarkdownContainer"] p {
+    color: #0f172a !important; /* Azul/Negro oscuro para contraste total */
+}
+
+/* Anular contenedores oscuros transparentes de Streamlit dentro del marco */
 div.window-risk div[data-testid="stVerticalBlockBorderWrapper"],
 div.window-risk div[data-testid="stColumn"],
 div.window-risk div[data-testid="stColumn"] > div,
@@ -23,38 +46,15 @@ div.window-risk div[data-testid="element-container"] {
     box-shadow: none !important;
 }
 
-/* Contenedor blanco unificado de la ventana */
-div.window-risk {
-    background-color: #ffffff !important;
-    border: 2px solid #94a3b8 !important;
-    border-radius: 10px !important;
-    padding: 16px !important;
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4) !important;
-    margin-top: 10px !important;
-}
-
-/* Forzar textos dentro del panel blanco a tonos oscuros de legibilidad */
-div.window-risk,
-div.window-risk *,
-div.window-risk p,
-div.window-risk label,
-div.window-risk span,
-div.window-risk h1,
-div.window-risk h2,
-div.window-risk h3,
-div.window-risk h4 {
-    color: #0f172a !important;
-}
-
 /* =========================================================
-   3. PESTAÑAS TIPO PESTAÑAS DE WINDOWS / @RISK
+   3. PESTAÑAS (TABS) TIPO WINDOWS / @RISK
    ========================================================= */
 div.window-risk button[data-baseweb="tab"] {
     background-color: #e2e8f0 !important;
     border: 1px solid #cbd5e1 !important;
     border-bottom: none !important;
     border-radius: 6px 6px 0 0 !important;
-    padding: 6px 14px !important;
+    padding: 8px 16px !important;
     margin-right: 4px !important;
 }
 
@@ -75,23 +75,22 @@ div.window-risk button[data-baseweb="tab"][aria-selected="true"] p {
 }
 
 /* =========================================================
-   4. TABLAS DE ESTADÍSTICAS Y PERCENTILES ESTILO @RISK
+   4. TARJETAS DE MÉTRICAS Y TABLAS DENTRO DEL PANEL
    ========================================================= */
-div.window-risk div[data-testid="stDataFrame"] {
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 4px !important;
-    background-color: #ffffff !important;
-}
-
-/* Cajas de Métricas internas estilo celda */
 div.window-risk div[data-testid="stMetric"] {
-    background-color: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
     border-radius: 6px !important;
-    padding: 6px 10px !important;
+    padding: 8px 12px !important;
 }
 
 div.window-risk div[data-testid="stMetricValue"] div {
     color: #0284c7 !important;
     font-weight: 700 !important;
+}
+
+div.window-risk div[data-testid="stDataFrame"] {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    background-color: #ffffff !important;
 }
